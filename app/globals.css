@@ -1,1 +1,18 @@
 @import "tailwindcss";
+
+:root {
+  --Ten:#AFAFAF;
+}
+
+@theme inline {
+
+  --color-Ten: var(--Ten);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+   
+  }
+}
+
+
