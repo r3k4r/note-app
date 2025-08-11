@@ -145,10 +145,10 @@ export default function NotesDashboard() {
       { notes.length === 0 ? 
         <EmptyState />
         :
-         <div className="max-w-7xl mx-auto">
+        <div className="max-w-7xl mx-auto relative">
           {viewMode === "list" && (
-            /* Priority Legend for List View */
-            <div className="mb-6 flex flex-wrap gap-4 text-sm">
+            /* Priority Legend for List View - now vertical */
+            <div className="mb-6 flex flex-col gap-3 text-sm absolute left-0 top-0">
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 bg-red-400 rounded-full"></div>
                 <span className="text-gray-600">Urgent</span>
@@ -207,10 +207,12 @@ export default function NotesDashboard() {
               </div>
             </div>
           ) : (
-            <div className="max-w-2xl space-y-4">
-              {groupNotesByPriority().map((note) => (
-                <NoteCard key={note.id} note={note} onDelete={handleDeleteNote} viewMode={viewMode} />
-              ))}
+            <div className="flex justify-center">
+              <div className="space-y-4 ml-20"> {/* Added ml-20 to make space for the legend */}
+                {groupNotesByPriority().map((note) => (
+                  <NoteCard key={note.id} note={note} onDelete={handleDeleteNote} viewMode={viewMode} />
+                ))}
+              </div>
             </div>
           )}
       
