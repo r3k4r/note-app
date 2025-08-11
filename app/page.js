@@ -9,7 +9,29 @@ import NoteCard from "@/components/Note-Card"
 export default function NotesDashboard() {
   const [viewMode, setViewMode] = useState("grid")
   const [openDialog, setOpenDialog] = useState(false)
-  const [notes, setNotes] = useState([])
+  const [notes, setNotes] = useState([
+    {
+      id: 1,
+      title: "Sample Note 1",
+      content: "This is a sample note content.",
+      date: "2023-10-01",
+      priority: "urgent"
+    },
+    {
+      id: 2,
+      title: "Sample Note 2",
+      content: "This is another sample note content.",
+      date: "2023-10-02",
+      priority: "high"
+    },
+    {
+      id: 3,
+      title: "Sample Note 3",
+      content: "This is yet another sample note content.",
+      date: "2023-10-03",
+      priority: "low"
+    }
+  ])
   
   const [newNote, setNewNote] = useState({
     title: "",
@@ -146,7 +168,23 @@ export default function NotesDashboard() {
 
       {/* Notes List */}
       {viewMode === "grid" ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+        notes.length !== 0 && 
+             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 relative">
+              <div className="hidden md:contents">
+                <div className="text-center mb-4">
+                  <h3 className="text-lg font-semibold text-red-500 mb-4">Urgent</h3>
+                </div>
+                <div className="text-center mb-4">
+                  <h3 className="text-lg font-semibold text-orange-500 mb-4">High</h3>
+                </div>
+                <div className="text-center mb-4">
+                  <h3 className="text-lg font-semibold text-teal-500 mb-4">Low</h3>
+                </div>
+              </div>
+
+              <div className="hidden md:block absolute left-1/3 top-0 bottom-0 border-l-2 border-dashed border-gray-300 transform -translate-x-1/2"></div>
+              <div className="hidden md:block absolute left-2/3 top-0 bottom-0 border-l-2 border-dashed border-gray-300 transform -translate-x-1/2"></div>
+            
               {/* Urgent Column */}
               <div className="space-y-4">
                 {groupNotesByPriority().urgent.map((note) => (

@@ -32,12 +32,14 @@ export default function NoteCard({ note, onDelete, viewMode = "grid" }) {
           <X className="w-4 h-4" />
         </button>
 
-        <div className="flex justify-between items-start mb-2">
+        <div className="flex justify-between items-start mb-2 px-4">
           <h3 className="font-semibold text-lg">{note.title}</h3>
           <span className="text-sm opacity-90">{formatDate(note.date)}</span>
         </div>
 
-        <p className="text-sm opacity-90 leading-relaxed">{note.content}</p>
+        <div className='px-4'>
+            <p className="text-sm opacity-90 leading-relaxed">{note.content}</p>
+        </div>
       </div>
     )
   }
