@@ -8,7 +8,12 @@ import { useState } from "react"
 const SignUp = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [showPasswordRequirements, setShowPasswordRequirements] = useState(false)
 
+  const passwordRequirements = [
+    { text: "Minimum of 8 characters", met: password.length >= 8 },
+    { text: "A minimum of 1 special character", met: /[!@#$%^&*(),.?":{}|<>]/.test(password) },
+  ]
   const handleSubmit = (e) => {
     e.preventDefault()
     console.log("SignUp attempt:", { email, password }) //later replace with actual SignUp logic
@@ -190,19 +195,36 @@ const SignUp = () => {
                 />
                 </div>
 
-                <div className="space-y-2">
-                <label htmlFor="password" className="text-sm font-medium text-gray-700 uppercase tracking-wide">
-                    PASSWORD
-                </label>
-                <input
-                    id="password"
-                    type="password"
-                    placeholder="Enter Your Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="w-full p-2 border-2 border-gray-300 rounded-sm bg-white text-gray-600 placeholder:text-gray-400"
-                    required
-                />
+
+                <div className=" relative">
+                    <label htmlFor="password" className="text-sm font-medium text-gray-700 uppercase tracking-wide">
+                        PASSWORD
+                    </label>
+                    <input
+                        id="password"
+                        type="password"
+                        placeholder="Enter Your Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        onFocus={() => setShowPasswordRequirements(true)}
+                        onBlur={() => setShowPasswordRequirements(false)}
+                        className="w-full p-2 border-2 border-gray-300 rounded-sm bg-white text-gray-600 placeholder:text-gray-400"
+                        required
+                    />
+
+                    {/* Added password requirements tooltip */}
+                    {showPasswordRequirements && (
+                    <div className="absolute top-full left-0 mt-2 p-4 bg-white border border-gray-200 rounded-lg shadow-lg z-10 w-full">
+                        <div className="space-y-2">
+                        {passwordRequirements.map((req, index) => (
+                            <div key={index} className="flex items-center space-x-2">
+                            <div className={`w-2 h-2 rounded-full ${req.met ? "bg-green-500" : "bg-gray-300"}`}></div>
+                            <span className={`text-sm ${req.met ? "text-green-600" : "text-gray-500"}`}>{req.text}</span>
+                            </div>
+                        ))}
+                        </div>
+                    </div>
+                    )}
                 </div>
 
                 <div className="space-y-2">
