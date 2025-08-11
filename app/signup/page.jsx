@@ -1,5 +1,3 @@
-
-
 'use client'
 
 import Image from "next/image"
@@ -8,6 +6,7 @@ import { useState } from "react"
 const SignUp = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [Confirmpassword, setConfirmPassword] = useState("")
   const [showPasswordRequirements, setShowPasswordRequirements] = useState(false)
 
   const passwordRequirements = [
@@ -196,7 +195,7 @@ const SignUp = () => {
                 </div>
 
 
-                <div className=" relative">
+                <div className="relative">
                     <label htmlFor="password" className="text-sm font-medium text-gray-700 uppercase tracking-wide">
                         PASSWORD
                     </label>
@@ -212,19 +211,23 @@ const SignUp = () => {
                         required
                     />
 
-                    {/* Added password requirements tooltip */}
-                    {showPasswordRequirements && (
-                    <div className="absolute top-full left-0 mt-2 p-4 bg-white border border-gray-200 rounded-lg shadow-lg z-10 w-full">
+                    {/* Enhanced password requirements tooltip with smooth transitions */}
+                    <div 
+                        className={`absolute top-full left-0 mt-2 p-4 bg-white border border-gray-200 rounded-lg shadow-lg z-10 w-full
+                                    transition-all duration-300 ease-in-out origin-top
+                                    ${showPasswordRequirements 
+                                        ? 'opacity-100 transform translate-y-0 scale-100' 
+                                        : 'opacity-0 transform -translate-y-2 scale-95 pointer-events-none'}`}
+                    >
                         <div className="space-y-2">
                         {passwordRequirements.map((req, index) => (
                             <div key={index} className="flex items-center space-x-2">
-                            <div className={`w-2 h-2 rounded-full ${req.met ? "bg-green-500" : "bg-gray-300"}`}></div>
-                            <span className={`text-sm ${req.met ? "text-green-600" : "text-gray-500"}`}>{req.text}</span>
+                            <div className={`w-2 h-2 rounded-full transition-colors duration-300 ${req.met ? "bg-green-500" : "bg-gray-300"}`}></div>
+                            <span className={`text-sm transition-colors duration-300 ${req.met ? "text-green-600" : "text-gray-500"}`}>{req.text}</span>
                             </div>
                         ))}
                         </div>
                     </div>
-                    )}
                 </div>
 
                 <div className="space-y-2">
@@ -235,8 +238,8 @@ const SignUp = () => {
                     id="confirm-password"
                     type="password"
                     placeholder="Confirm Your Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    value={Confirmpassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
                     className="w-full p-2 border-2 border-gray-300 rounded-sm bg-white text-gray-600 placeholder:text-gray-400"
                     required
                 />
