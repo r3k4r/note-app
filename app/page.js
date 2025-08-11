@@ -186,21 +186,21 @@ export default function NotesDashboard() {
               <div className="hidden md:block absolute left-2/3 top-0 bottom-0 border-l-2 border-dashed border-gray-300 transform -translate-x-1/2"></div>
             
               {/* Urgent Column */}
-              <div className="space-y-4">
+              <div className="space-y-4 flex flex-col items-center">
                 {groupNotesByPriority().urgent.map((note) => (
                   <NoteCard key={note.id} note={note} onDelete={handleDeleteNote} viewMode={viewMode} />
                 ))}
               </div>
 
               {/* High Priority Column */}
-              <div className="space-y-4">
+              <div className="space-y-4 flex flex-col items-center">
                 {groupNotesByPriority().high.map((note) => (
                   <NoteCard key={note.id} note={note} onDelete={handleDeleteNote} viewMode={viewMode} />
                 ))}
               </div>
 
               {/* Low Priority Column */}
-              <div className="space-y-4">
+              <div className="space-y-4 flex flex-col items-center">
                 {groupNotesByPriority().low.map((note) => (
                   <NoteCard key={note.id} note={note} onDelete={handleDeleteNote} viewMode={viewMode} />
                 ))}
