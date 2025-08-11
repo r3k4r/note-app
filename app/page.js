@@ -137,7 +137,11 @@ export default function NotesDashboard() {
                   value={newNote.title}
                   onChange={handleInputChange}
                   required
-                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-200"
+                  className={`w-full p-2 border rounded-md transition-colors duration-200
+                    ${newNote.title 
+                      ? 'border-2 border-green-500' 
+                      : 'border-gray-300'} 
+                    focus:outline-none focus:ring-2 focus:ring-gray-200`}
                   placeholder="Title"
                 />
               </div>
@@ -154,7 +158,11 @@ export default function NotesDashboard() {
                   onChange={handleInputChange}
                   required
                   rows={4}
-                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-200"
+                  className={`w-full p-2 border rounded-md transition-colors duration-200
+                    ${newNote.content 
+                      ? 'border-2 border-green-500' 
+                      : 'border-gray-300'} 
+                    focus:outline-none focus:ring-2 focus:ring-gray-200`}
                   placeholder="Content"
                 />
               </div>
@@ -171,7 +179,11 @@ export default function NotesDashboard() {
                   value={newNote.date}
                   onChange={handleInputChange}
                   required
-                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-200"
+                  className={`w-full p-2 border rounded-md transition-colors duration-200
+                    ${newNote.date 
+                      ? 'border-2 border-green-500' 
+                      : 'border-gray-300'} 
+                    focus:outline-none focus:ring-2 focus:ring-gray-200`}
                 />
               </div>
               
@@ -184,24 +196,24 @@ export default function NotesDashboard() {
                   <button
                     type="button"
                     onClick={() => handlePrioritySelect("urgent")}
-                    className={`flex-1 py-2 px-3 rounded-md font-medium text-white bg-red-500 hover:bg-red-600 transition-colors
-                      ${newNote.priority === "urgent" ? "ring-2 ring-offset-2 ring-red-500" : ""}`}
+                    className={`flex-1 py-1 px-3 rounded-2xl font-medium text-white bg-red-400 hover:bg-red-500 transition-colors
+                      ${newNote.priority === "urgent" ? "ring-2 ring-offset-2 ring-red-500 bg-red-500" : ""}`}
                   >
                     Urgent
                   </button>
                   <button
                     type="button"
                     onClick={() => handlePrioritySelect("high")}
-                    className={`flex-1 py-2 px-3 rounded-md font-medium text-white bg-yellow-500 hover:bg-yellow-600 transition-colors
-                      ${newNote.priority === "high" ? "ring-2 ring-offset-2 ring-yellow-500" : ""}`}
+                    className={`flex-1 py-1 px-3 rounded-2xl font-medium text-white bg-yellow-600 hover:bg-yellow-700 transition-colors
+                      ${newNote.priority === "high" ? "ring-2 ring-offset-2 ring-yellow-700 bg-yellow-700" : ""}`}
                   >
                     High
                   </button>
                   <button
                     type="button"
                     onClick={() => handlePrioritySelect("low")}
-                    className={`flex-1 py-2 px-3 rounded-md font-medium text-white bg-green-500 hover:bg-green-600 transition-colors
-                      ${newNote.priority === "low" ? "ring-2 ring-offset-2 ring-green-500" : ""}`}
+                    className={`flex-1 py-1 px-3 rounded-2xl font-medium text-white bg-teal-600 hover:bg-teal-700 transition-colors
+                      ${newNote.priority === "low" ? "ring-2 ring-offset-2 ring-teal-700 bg-teal-700" : ""}`}
                   >
                     Low
                   </button>
@@ -212,7 +224,7 @@ export default function NotesDashboard() {
               <div className="pt-2 flex justify-center">
                 <button
                   type="submit"
-                  className="w-full sm:w-auto px-6 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition-colors"
+                  className="w-full sm:w-auto px-5 py-1.5 text-white font-medium rounded-lg bg-gradient-to-r from-left to-right"
                 >
                   Add Note
                 </button>
