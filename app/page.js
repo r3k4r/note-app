@@ -3,8 +3,9 @@ import Navbar from "@/components/Navbar"
 const Home = () => {
   return (
     <>
-    <Navbar />
-    <div className=''>Home</div>
+    <div className=''>
+      <h1 className='text-3xl font-bold text-center mt-10'>Welcome to the Note App</h1>
+    </div>
     </>
   )
 }
