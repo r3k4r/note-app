@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react"
 import { Plus, Grid3X3, List, X } from "lucide-react"
 import EmptyState from "@/components/EmptyState"
+import NoteCard from "@/components/Note-Card"
 
 
 export default function NotesDashboard() {
@@ -64,6 +65,25 @@ export default function NotesDashboard() {
     setOpenDialog(false)
   }
 
+
+  // Handle note deletion
+   const handleDeleteNote = (noteId) => {
+    setNotes((prev) => prev.filter((note) => note.id !== noteId))
+  }
+
+  const groupNotesByPriority = () => {
+    const urgent = notes.filter((note) => note.priority === "urgent")
+    const high = notes.filter((note) => note.priority === "high")
+    const low = notes.filter((note) => note.priority === "low")
+
+    if (viewMode === "grid") {
+      return { urgent, high, low }
+    } else {
+      // For list view, return sorted array
+      return [...urgent, ...high, ...low]
+    }
+  }
+
   return (
     <div className="min-h-screen bg-gray-100 p-8">
       {/* Header */}
@@ -100,9 +120,62 @@ export default function NotesDashboard() {
         </div>
 
       {/* Empty State */}
-      { notes.length === 0 && 
+      { notes.length === 0 ? 
         <EmptyState />
+        :
+         <div className="max-w-7xl mx-auto">
+          {viewMode === "list" && (
+            /* Priority Legend for List View */
+            <div className="mb-6 flex flex-wrap gap-4 text-sm">
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 bg-red-400 rounded-full"></div>
+                <span className="text-gray-600">Urgent</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 bg-orange-400 rounded-full"></div>
+                <span className="text-gray-600">High</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 bg-teal-400 rounded-full"></div>
+                <span className="text-gray-600">Low</span>
+              </div>
+            </div>
+          )}
+        </div>
       }
+
+      {/* Notes List */}
+      {viewMode === "grid" ? (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+              {/* Urgent Column */}
+              <div className="space-y-4">
+                {groupNotesByPriority().urgent.map((note) => (
+                  <NoteCard key={note.id} note={note} onDelete={handleDeleteNote} viewMode={viewMode} />
+                ))}
+              </div>
+
+              {/* High Priority Column */}
+              <div className="space-y-4">
+                {groupNotesByPriority().high.map((note) => (
+                  <NoteCard key={note.id} note={note} onDelete={handleDeleteNote} viewMode={viewMode} />
+                ))}
+              </div>
+
+              {/* Low Priority Column */}
+              <div className="space-y-4">
+                {groupNotesByPriority().low.map((note) => (
+                  <NoteCard key={note.id} note={note} onDelete={handleDeleteNote} viewMode={viewMode} />
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div className="max-w-2xl space-y-4">
+              {groupNotesByPriority().map((note) => (
+                <NoteCard key={note.id} note={note} onDelete={handleDeleteNote} viewMode={viewMode} />
+              ))}
+            </div>
+          )}
+      
 
       {/* Add Note Dialog */}
       {openDialog && (
