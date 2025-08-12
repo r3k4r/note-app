@@ -9,6 +9,7 @@ import NoteDialog from "@/components/NoteDialog"
 import NoteHeader from "@/components/notes/NoteHeader"
 import NotesContainer from "@/components/notes/NotesContainer"
 import DeleteNoteDialog from "@/components/notes/DeleteNoteDialog"
+import { ENDPOINTS } from "@/config"
 
 export default function NotesDashboard() {
   const [viewMode, setViewMode] = useState("grid")
@@ -29,9 +30,7 @@ export default function NotesDashboard() {
     
     setIsLoading(true)
     try {
-      const response = await fetch(
-        `https://688b2b592a52cabb9f506d87.mockapi.io/api/v1/users/${user.id}/notes`
-      )
+      const response = await fetch(ENDPOINTS.NOTES(user.id))
 
       if (!response.ok) {
         toast.error("No Notes to Show. Please try again.")
@@ -100,7 +99,7 @@ export default function NotesDashboard() {
     
     try {
       const response = await fetch(
-        `https://688b2b592a52cabb9f506d87.mockapi.io/api/v1/users/${user.id}/notes/${noteToDelete.id}`,
+        ENDPOINTS.NOTE(user.id, noteToDelete.id),
         {
           method: 'DELETE',
         }
@@ -164,5 +163,5 @@ export default function NotesDashboard() {
     </div>
   )
 }
-    
+
 

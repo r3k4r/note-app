@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation"
 import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { ENDPOINTS, APP_CONFIG } from "@/config"
 
 // Create a schema with Zod for signup validation
 const signupSchema = z.object({
@@ -60,7 +61,7 @@ const SignUp = () => {
     setIsLoading(true)
     
     try {
-      const response = await fetch('https://688b2b592a52cabb9f506d87.mockapi.io/api/v1/users', {
+      const response = await fetch(ENDPOINTS.USERS, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -86,7 +87,7 @@ const SignUp = () => {
       // Redirect to home page or login page after successful signup
       setTimeout(() => {
         router.push('/')
-      }, 1500)
+      }, APP_CONFIG.AUTH_TIMEOUT)
       
     } catch (error) {
       console.error('Signup error:', error)

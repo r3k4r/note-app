@@ -5,6 +5,7 @@ import { toast } from "sonner"
 import { useAuth } from "../AuthContext"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import NoteForm from "./NoteForm"
+import { ENDPOINTS } from "@/config"
 
 export default function CreateNoteDialog({ isOpen, onClose, onSuccess }) {
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -19,7 +20,7 @@ export default function CreateNoteDialog({ isOpen, onClose, onSuccess }) {
     setIsSubmitting(true)
     
     try {
-      const url = `https://688b2b592a52cabb9f506d87.mockapi.io/api/v1/users/${user.id}/notes`
+      const url = ENDPOINTS.NOTES(user.id)
       
       const response = await fetch(url, {
         method: 'POST',

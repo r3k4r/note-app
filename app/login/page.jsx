@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation"
 import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { ENDPOINTS, APP_CONFIG } from "@/config"
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address" }),
@@ -37,7 +38,7 @@ const Login = () => {
     try {
       // Query the API to find a user with the provided email
       const response = await fetch(
-        `https://688b2b592a52cabb9f506d87.mockapi.io/api/v1/users?email=${encodeURIComponent(data.email)}`
+        `${ENDPOINTS.USERS}?email=${encodeURIComponent(data.email)}`
       )
       
       if (!response.ok) {
@@ -68,7 +69,7 @@ const Login = () => {
       // Redirect to home page after successful login
       setTimeout(() => {
         router.push('/')
-      }, 1500)
+      }, APP_CONFIG.AUTH_TIMEOUT)
       
     } catch (error) {
       console.error('Login error:', error)

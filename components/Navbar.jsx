@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import { motion, AnimatePresence } from "framer-motion"
 import { Menu, X } from "lucide-react"
+import { APP_CONFIG } from "@/config"
 
 const Navbar = () => {
   const { user, logout } = useAuth()
@@ -46,7 +47,7 @@ const Navbar = () => {
     toast.success('Logout successful!')
     setTimeout(() => {
         router.push('/login')
-      }, 1500) 
+      }, APP_CONFIG.AUTH_TIMEOUT) 
   }
 
   return (
