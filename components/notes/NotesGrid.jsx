@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import NoteCard from "@/components/NoteCard"
+import NoteCard from "@/components/notes/NoteCard"
 
 export default function NotesGrid({ notes, onDelete, onEdit }) {
   // Group notes by priority
