@@ -93,10 +93,9 @@ export default function NoteDialog({
       let url = `https://688b2b592a52cabb9f506d87.mockapi.io/api/v1/users/${user.id}/notes`
       let method = 'POST'
       
-      // If updating, append the note ID and change method to PUT
       if (mode === "update" && noteData && noteData.id) {
         url = `${url}/${noteData.id}`
-        method = 'PUT' // Using PUT instead of PATCH as MockAPI might not support PATCH
+        method = 'PUT' 
       }
 
       const response = await fetch(url, {
