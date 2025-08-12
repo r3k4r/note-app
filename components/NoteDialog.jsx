@@ -107,7 +107,7 @@ export default function NoteDialog({
       })
 
       if (!response.ok) {
-        throw new Error(mode === "create" ? "Failed to create note" : "Failed to update note")
+        toast.error(`Failed to ${mode === "create" ? "create" : "update"} note. Please try again.`)
       }
 
       const responseData = await response.json()

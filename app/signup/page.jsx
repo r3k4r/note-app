@@ -60,7 +60,7 @@ const SignUp = () => {
       })
       
       if (!response.ok) {
-        throw new Error('Signup failed')
+        toast.error('Failed to create account. Please try again.')
       }
       
       const userData = await response.json()

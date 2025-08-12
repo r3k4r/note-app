@@ -73,7 +73,7 @@ export default function NotesDashboard() {
       )
 
       if (!response.ok) {
-        throw new Error("Failed to fetch notes")
+        toast.error("Failed to load notes. Please try again.")
       }
 
       const fetchedNotes = await response.json()
@@ -161,7 +161,7 @@ export default function NotesDashboard() {
       )
 
       if (!response.ok) {
-        throw new Error("Failed to delete note")
+        toast.error("Failed to delete note. Please try again.")
       }
 
       // Update local state

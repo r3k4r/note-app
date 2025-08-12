@@ -24,7 +24,7 @@ const Login = () => {
       )
       
       if (!response.ok) {
-        throw new Error('Network response was not ok')
+        toast.error('Failed to fetch user data. Please try again later.')
       }
       
       const users = await response.json()
