@@ -30,27 +30,19 @@ export default function NoteCard({ note, onDelete, viewMode = "grid" }) {
     return date.toLocaleDateString("en-GB")
   }
 
-  // Animation variants
+  // Animation variants - simplified for subtle transitions
   const cardVariants = {
     hidden: { 
-      opacity: 0, 
-      y: 20,
-      scale: 0.95
+      opacity: 0
     },
     visible: { 
-      opacity: 1, 
-      y: 0,
-      scale: 1,
+      opacity: 1,
       transition: { 
-        type: "spring", 
-        stiffness: 500, 
-        damping: 30,
-        mass: 1
+        duration: 0.3
       } 
     },
     exit: { 
       opacity: 0, 
-      scale: 0.95, 
       transition: { duration: 0.2 } 
     }
   }
@@ -253,4 +245,5 @@ export default function NoteCard({ note, onDelete, viewMode = "grid" }) {
       </div>
     </motion.div>
   )
+
 }
