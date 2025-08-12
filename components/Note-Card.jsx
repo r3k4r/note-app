@@ -1,6 +1,6 @@
 "use client"
 
-import { Pencil, X } from "lucide-react"
+import { Pencil, X, Trash } from "lucide-react"
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 
@@ -51,6 +51,11 @@ export default function NoteCard({ note, onDelete, onEdit, viewMode = "grid" }) 
     unchecked: { scale: 1 }
   }
 
+  const handleDelete = (e) => {
+    e.stopPropagation();
+    onDelete(note.id, note.priority);
+  };
+
   if (viewMode === "list") {
     return (
       <motion.div 
@@ -63,7 +68,7 @@ export default function NoteCard({ note, onDelete, onEdit, viewMode = "grid" }) 
         style={{ height: isExpanded ? 'auto' : '130px' }}
       >
         <motion.button
-          onClick={() => onDelete(note.id, note.priority)}
+          onClick={handleDelete}
           className="absolute top-2 right-2 text-white hover:text-gray-200 transition-colors"
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
@@ -171,7 +176,7 @@ export default function NoteCard({ note, onDelete, onEdit, viewMode = "grid" }) 
           </motion.button>
 
           <motion.button
-            onClick={() => onDelete(note.id, note.priority)}
+            onClick={handleDelete}
             className="absolute top-2 right-2 text-white hover:text-gray-200 transition-colors"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
@@ -227,17 +232,14 @@ export default function NoteCard({ note, onDelete, onEdit, viewMode = "grid" }) 
                 </AnimatePresence>
                 
                 {!isExpanded && isContentLong && (
-                  <>
-                    {" "}
-                    <motion.button 
-                      onClick={() => setIsExpanded(true)}
-                      className="text-xs underline inline-flex focus:outline-none hover:text-white/80"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      see more?
-                    </motion.button>
-                  </>
+                  <motion.button 
+                    onClick={() => setIsExpanded(true)}
+                    className="text-xs underline inline-flex focus:outline-none hover:text-white/80"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    see more?
+                  </motion.button>
                 )}
                 {isExpanded && isContentLong && (
                   <motion.button 
