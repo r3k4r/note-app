@@ -6,6 +6,8 @@ import { toast } from "sonner"
 import { useAuth } from "@/components/AuthContext"
 import { useRouter } from "next/navigation"
 import { z } from "zod"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address" }),
@@ -13,34 +15,34 @@ const loginSchema = z.object({
 })
 
 const Login = () => {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const { login } = useAuth()
   const router = useRouter()
+  
+  const { 
+    register, 
+    handleSubmit, 
+    formState: { errors } 
+  } = useForm({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: ""
+    }
+  })
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
+  const onSubmit = async (data) => {
     setIsLoading(true)
     
     try {
-      // Validate form data with Zod
-      const result = loginSchema.safeParse({ email, password })
-      
-      if (!result.success) {
-        const errorMessage = result.error.errors[0]?.message || "Invalid form data"
-        toast.error(errorMessage)
-        setIsLoading(false)
-        return
-      }
-      
       // Query the API to find a user with the provided email
       const response = await fetch(
-        `https://688b2b592a52cabb9f506d87.mockapi.io/api/v1/users?email=${encodeURIComponent(email)}`
+        `https://688b2b592a52cabb9f506d87.mockapi.io/api/v1/users?email=${encodeURIComponent(data.email)}`
       )
       
       if (!response.ok) {
-        toast.error('Failed to fetch user data. Please try again later.')
+        toast.error('User Not Found. Please try again later.')
+        return
       }
       
       const users = await response.json()
@@ -54,7 +56,7 @@ const Login = () => {
       const user = users[0]
       
       // Verify the password
-      if (user.password !== password) {
+      if (user.password !== data.password) {
         toast.error('Incorrect password. Please try again.')
         return
       }
@@ -93,7 +95,7 @@ const Login = () => {
 
         {/* Login form || RIGHT-SIDE*/}
         <div className="w-full max-w-md p-4 sm:p-6 md:p-8 rounded-lg">
-            <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 md:space-y-6">
                 <div className="space-y-1 md:space-y-2">
                 <label htmlFor="email" className="text-sm font-medium text-gray-700 uppercase tracking-wide">
                     EMAIL
@@ -102,12 +104,13 @@ const Login = () => {
                     id="email"
                     type="email"
                     placeholder="Enter Your Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full p-2 border-2 border-gray-300 rounded-sm bg-white text-gray-600 placeholder:text-gray-400"
-                    required
+                    className={`w-full p-2 border-2 ${errors.email ? "border-red-300" : "border-gray-300"} rounded-sm bg-white text-gray-600 placeholder:text-gray-400`}
                     disabled={isLoading}
+                    {...register("email")}
                 />
+                {errors.email && (
+                  <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
+                )}
                 </div>
 
                 <div className="space-y-1 md:space-y-2">
@@ -118,12 +121,13 @@ const Login = () => {
                     id="password"
                     type="password"
                     placeholder="Enter Your Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="w-full p-2 border-2 border-gray-300 rounded-sm bg-white text-gray-600 placeholder:text-gray-400"
-                    required
+                    className={`w-full p-2 border-2 ${errors.password ? "border-red-300" : "border-gray-300"} rounded-sm bg-white text-gray-600 placeholder:text-gray-400`}
                     disabled={isLoading}
+                    {...register("password")}
                 />
+                {errors.password && (
+                  <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>
+                )}
                 </div>
 
                 <div className='flex justify-end mt-4'>

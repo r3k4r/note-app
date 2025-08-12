@@ -1,11 +1,13 @@
 'use client'
 
 import Image from "next/image"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { toast } from "sonner"
 import { useAuth } from "@/components/AuthContext"
 import { useRouter } from "next/navigation"
 import { z } from "zod"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
 
 // Create a schema with Zod for signup validation
 const signupSchema = z.object({
@@ -23,48 +25,38 @@ const signupSchema = z.object({
 })
 
 const SignUp = () => {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [confirmPassword, setConfirmPassword] = useState("")
   const [showPasswordRequirements, setShowPasswordRequirements] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const [passwordError, setPasswordError] = useState("")
-  const [confirmPasswordTouched, setConfirmPasswordTouched] = useState(false)
   const { signup } = useAuth()
   const router = useRouter()
 
+  const { 
+    register, 
+    handleSubmit, 
+    watch,
+    formState: { errors } 
+  } = useForm({
+    resolver: zodResolver(signupSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+      confirmPassword: ""
+    }
+  })
+
+  // Watch password field to check requirements
+  const watchPassword = watch("password", "")
+
   // Define password requirements based on our Zod schema
   const passwordRequirements = [
-    { text: "Minimum of 8 characters", met: password.length >= 8 },
-    { text: "A minimum of 1 special character", met: /[!@#$%^&*(),.?":{}|<>]/.test(password) },
+    { text: "Minimum of 8 characters", met: watchPassword.length >= 8 },
+    { text: "A minimum of 1 special character", met: /[!@#$%^&*(),.?":{}|<>]/.test(watchPassword) },
   ]
 
-  const validateForm = () => {
-    const result = signupSchema.safeParse({
-      email,
-      password,
-      confirmPassword
-    })
-    
-    if (!result.success) {
-      // Get the first error message
-      const errorMsg = result.error.errors[0]?.message || "Validation failed"
-      setPasswordError(errorMsg)
-      return false
-    }
-    
-    setPasswordError("")
-    return true
-  }
+  // The key change: register password field with custom event handlers
+  const passwordRegister = register("password");
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    
-    if (!validateForm()) {
-      toast.error(passwordError)
-      return
-    }
-    
+  const onSubmit = async (data) => {
     setIsLoading(true)
     
     try {
@@ -73,11 +65,15 @@ const SignUp = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ 
+          email: data.email, 
+          password: data.password 
+        }),
       })
       
       if (!response.ok) {
         toast.error('Failed to create account. Please try again.')
+        return
       }
       
       const userData = await response.json()
@@ -100,20 +96,6 @@ const SignUp = () => {
     }
   }
 
-  const handleConfirmPasswordChange = (e) => {
-    setConfirmPassword(e.target.value)
-  }
-
-  //this function is called when the confirm password input loses focus
-  //it sets the confirmPasswordTouched state to true so when the user leaves the input, 
-  //then the error will be shown if the passwords do not match
-  const handleConfirmPasswordBlur = () => {
-    setConfirmPasswordTouched(true)
-  }
-
-  const passwordsMatch = password === confirmPassword
-  const showPasswordMatchError = confirmPasswordTouched && !passwordsMatch && confirmPassword.length > 0
-
   return (
     <div className='max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10 flex flex-col md:flex-row items-center justify-center md:justify-between gap-8 md:gap-4'>
         {/* LEFT-SIDE */}
@@ -131,7 +113,7 @@ const SignUp = () => {
 
         {/* SignUp form || RIGHT-SIDE*/}
         <div className="w-full max-w-md p-4 sm:p-6 md:p-8 rounded-lg">
-            <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 md:space-y-6">
                 <div className="space-y-1 md:space-y-2">
                 <label htmlFor="email" className="text-sm font-medium text-gray-700 uppercase tracking-wide">
                     EMAIL
@@ -140,14 +122,14 @@ const SignUp = () => {
                     id="email"
                     type="email"
                     placeholder="Enter Your Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full p-2 border-2 border-gray-300 rounded-sm bg-white text-gray-600 placeholder:text-gray-400"
-                    required
+                    className={`w-full p-2 border-2 ${errors.email ? "border-red-300" : "border-gray-300"} rounded-sm bg-white text-gray-600 placeholder:text-gray-400`}
                     disabled={isLoading}
+                    {...register("email")}
                 />
+                {errors.email && (
+                  <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
+                )}
                 </div>
-
 
                 <div className="relative space-y-1 md:space-y-2">
                     <label htmlFor="password" className="text-sm font-medium text-gray-700 uppercase tracking-wide">
@@ -157,21 +139,28 @@ const SignUp = () => {
                         id="password"
                         type="password"
                         placeholder="Enter Your Password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        onFocus={() => setShowPasswordRequirements(true)}
-                        onBlur={() => setShowPasswordRequirements(false)}
-                        className="w-full p-2 border-2 border-gray-300 rounded-sm bg-white text-gray-600 placeholder:text-gray-400"
-                        required
+                        className={`w-full p-2 border-2 ${errors.password ? "border-red-300" : "border-gray-300"} rounded-sm bg-white text-gray-600 placeholder:text-gray-400`}
                         disabled={isLoading}
+                        {...passwordRegister}
+                        onFocus={() => {
+                            setShowPasswordRequirements(true);
+                            passwordRegister.onFocus(); 
+                        }}
+                        onBlur={(e) => {
+                            setShowPasswordRequirements(false);
+                            passwordRegister.onBlur(e); 
+                        }}
                     />
+                    {errors.password && (
+                      <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>
+                    )}
 
                     {/* Enhanced password requirements tooltip with smooth transitions */}
                     <div 
                         className={`absolute top-full left-0 mt-2 p-4 bg-white border border-gray-200 rounded-lg shadow-lg z-10 w-full
                                     transition-all duration-300 ease-in-out origin-top
                                     ${showPasswordRequirements 
-                                        ? 'opacity-100 transform translate-y-0 scale-100' 
+                                        ? 'opacity-100 transform translate-y-0 scale-100 pointer-events-auto' 
                                         : 'opacity-0 transform -translate-y-2 scale-95 pointer-events-none'}`}
                     >
                         <div className="space-y-2">
@@ -193,18 +182,12 @@ const SignUp = () => {
                     id="confirm-password"
                     type="password"
                     placeholder="Confirm Your Password"
-                    value={confirmPassword}
-                    onChange={handleConfirmPasswordChange}
-                    onBlur={handleConfirmPasswordBlur}
-                    className={`w-full p-2 border-2 ${
-                      showPasswordMatchError 
-                      ? "border-red-300" : "border-gray-300"
-                    } rounded-sm bg-white text-gray-600 placeholder:text-gray-400`}
-                    required
+                    className={`w-full p-2 border-2 ${errors.confirmPassword ? "border-red-300" : "border-gray-300"} rounded-sm bg-white text-gray-600 placeholder:text-gray-400`}
                     disabled={isLoading}
+                    {...register("confirmPassword")}
                 />
-                {showPasswordMatchError && (
-                  <p className="text-red-500 text-xs mt-1">Passwords don't match</p>
+                {errors.confirmPassword && (
+                  <p className="text-red-500 text-xs mt-1">{errors.confirmPassword.message}</p>
                 )}
                 </div>
 
