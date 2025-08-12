@@ -3,27 +3,27 @@
 import { motion } from "framer-motion"
 import NoteCard from "@/components/notes/NoteCard"
 
-export default function NotesGrid({ notes, onDelete, onEdit }) {
-  // Group notes by priority
-  const groupNotesByPriority = () => {
-    const urgent = notes.filter((note) => note.priority === "urgent")
-    const high = notes.filter((note) => note.priority === "high")
-    const low = notes.filter((note) => note.priority === "low")
-    return { urgent, high, low }
-  }
+// Utility function defined outside component
+const groupNotesByPriority = (notes) => {
+  const urgent = notes.filter((note) => note.priority === "urgent")
+  const high = notes.filter((note) => note.priority === "high")
+  const low = notes.filter((note) => note.priority === "low")
+  return { urgent, high, low }
+}
 
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.05,
-      },
+// Animation variants defined outside component
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.05,
     },
-  };
+  },
+};
 
-  const groupedNotes = groupNotesByPriority();
+export default function NotesGrid({ notes, onDelete, onEdit }) {
+  const groupedNotes = groupNotesByPriority(notes);
 
   return (
     <motion.div 

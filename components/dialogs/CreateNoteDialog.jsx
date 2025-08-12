@@ -40,7 +40,7 @@ export default function CreateNoteDialog({ isOpen, onClose, onSuccess }) {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="flex items-center">
+          <DialogTitle className="flex items-center text-black">
             Add New Note
             {isSubmitting && <Spinner size="sm" color="black" className="ml-2" />}
           </DialogTitle>

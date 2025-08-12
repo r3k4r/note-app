@@ -1,8 +1,50 @@
 "use client"
 
-import { Pencil, X, Trash } from "lucide-react"
+import { Pencil, X } from "lucide-react"
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
+
+// Utility functions defined outside component
+const getPriorityColor = (priority) => {
+  switch (priority) {
+    case "urgent":
+      return "bg-red-400"
+    case "high":
+      return "bg-orange-400"
+    case "low":
+      return "bg-teal-400"
+    default:
+      return "bg-gray-400"
+  }
+}
+
+const formatDate = (dateString) => {
+  if (!dateString) return ""
+  const date = new Date(dateString)
+  return date.toLocaleDateString("en-GB")
+}
+
+// Animation variants defined outside component
+const cardVariants = {
+  hidden: { 
+    opacity: 0
+  },
+  visible: { 
+    opacity: 1,
+    transition: { 
+      duration: 0.3
+    } 
+  },
+  exit: { 
+    opacity: 0, 
+    transition: { duration: 0.2 } 
+  }
+}
+
+const checkboxVariants = {
+  checked: { scale: 1.2, transition: { type: "spring", stiffness: 500, damping: 15 } },
+  unchecked: { scale: 1 }
+}
 
 export default function NoteCard({ note, onDelete, onEdit, viewMode = "grid" }) {
   const [isChecked, setIsChecked] = useState(false)
@@ -10,46 +52,6 @@ export default function NoteCard({ note, onDelete, onEdit, viewMode = "grid" }) 
   
   const contentLimit = 100
   const isContentLong = note.content.length > contentLimit
-
-  const getPriorityColor = (priority) => {
-    switch (priority) {
-      case "urgent":
-        return "bg-red-400"
-      case "high":
-        return "bg-orange-400"
-      case "low":
-        return "bg-teal-400"
-      default:
-        return "bg-gray-400"
-    }
-  }
-
-  const formatDate = (dateString) => {
-    if (!dateString) return ""
-    const date = new Date(dateString)
-    return date.toLocaleDateString("en-GB")
-  }
-
-  const cardVariants = {
-    hidden: { 
-      opacity: 0
-    },
-    visible: { 
-      opacity: 1,
-      transition: { 
-        duration: 0.3
-      } 
-    },
-    exit: { 
-      opacity: 0, 
-      transition: { duration: 0.2 } 
-    }
-  }
-
-  const checkboxVariants = {
-    checked: { scale: 1.2, transition: { type: "spring", stiffness: 500, damping: 15 } },
-    unchecked: { scale: 1 }
-  }
 
   const handleDelete = (e) => {
     e.stopPropagation();

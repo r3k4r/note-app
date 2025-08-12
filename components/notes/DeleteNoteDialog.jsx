@@ -12,6 +12,21 @@ import {
 import { motion } from "framer-motion"
 import { Spinner } from "@/components/ui/spinner"
 
+
+
+const getPriorityColor = (priority) => {
+  switch (priority) {
+    case "urgent":
+      return "text-red-500"
+    case "high":
+      return "text-orange-500"
+    case "low":
+      return "text-teal-500"
+    default:
+      return "text-gray-500"
+  }
+}
+
 export default function DeleteNoteDialog({ noteToDelete, open, onClose, onConfirm }) {
   const [isDeleting, setIsDeleting] = useState(false)
 
@@ -21,34 +36,6 @@ export default function DeleteNoteDialog({ noteToDelete, open, onClose, onConfir
       await onConfirm()
     } finally {
       setIsDeleting(false)
-    }
-  }
-
-  // Get priority label
-  const getPriorityLabel = (priority) => {
-    switch (priority) {
-      case "urgent":
-        return "Urgent"
-      case "high":
-        return "High Priority"
-      case "low":
-        return "Low Priority"
-      default:
-        return "Normal"
-    }
-  }
-
-  // Get priority color
-  const getPriorityColor = (priority) => {
-    switch (priority) {
-      case "urgent":
-        return "text-red-500"
-      case "high":
-        return "text-orange-500"
-      case "low":
-        return "text-teal-500"
-      default:
-        return "text-gray-500"
     }
   }
 
@@ -90,3 +77,4 @@ export default function DeleteNoteDialog({ noteToDelete, open, onClose, onConfir
     </Dialog>
   )
 }
+

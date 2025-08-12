@@ -2,38 +2,39 @@
 
 import { motion } from "framer-motion"
 
+// Utility function defined outside component
+const getRandomHeight = () => {
+  const heights = ["h-[120px]", "h-[130px]", "h-[140px]"];
+  return heights[Math.floor(Math.random() * heights.length)];
+};
+
+// Animation variants defined outside component
+const containerVariants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  show: { 
+    opacity: 1, 
+    y: 0,
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 24
+    }
+  }
+};
+
 export default function NoteSkeleton({ viewMode = "grid", count = 3 }) {
   // Create an array of the specified count to render multiple skeletons
   const skeletons = Array.from({ length: count }, (_, i) => i);
-
-  const getRandomHeight = () => {
-    const heights = ["h-[120px]", "h-[130px]", "h-[140px]"];
-    return heights[Math.floor(Math.random() * heights.length)];
-  };
-
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    show: { 
-      opacity: 1, 
-      y: 0,
-      transition: {
-        type: "spring",
-        stiffness: 300,
-        damping: 24
-      }
-    }
-  };
 
   // Skeleton for grid view
   if (viewMode === "grid") {

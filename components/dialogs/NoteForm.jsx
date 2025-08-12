@@ -1,10 +1,31 @@
 "use client"
 
-import { useState, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { noteSchema } from "./NoteSchema"
 import { Spinner } from "@/components/ui/spinner"
+
+// Priority button configurations defined outside component
+const priorityButtons = [
+  {
+    id: "urgent",
+    label: "Urgent",
+    baseClass: "flex-1 py-1 px-3 rounded-2xl font-medium text-white bg-red-400 hover:bg-red-500 transition-colors",
+    activeClass: "ring-2 ring-offset-2 ring-red-500 bg-red-500"
+  },
+  {
+    id: "high",
+    label: "High",
+    baseClass: "flex-1 py-1 px-3 rounded-2xl font-medium text-white bg-yellow-600 hover:bg-yellow-700 transition-colors",
+    activeClass: "ring-2 ring-offset-2 ring-yellow-700 bg-yellow-700"
+  },
+  {
+    id: "low",
+    label: "Low",
+    baseClass: "flex-1 py-1 px-3 rounded-2xl font-medium text-white bg-teal-600 hover:bg-teal-700 transition-colors",
+    activeClass: "ring-2 ring-offset-2 ring-teal-700 bg-teal-700"
+  }
+];
 
 export default function NoteForm({ defaultValues, onSubmit, isSubmitting, mode = "create" }) {
   const { 
@@ -95,33 +116,17 @@ export default function NoteForm({ defaultValues, onSubmit, isSubmitting, mode =
           Priority Level
         </label>
         <div className="flex gap-3">
-          <button
-            type="button"
-            onClick={() => handlePrioritySelect("urgent")}
-            disabled={isSubmitting}
-            className={`flex-1 py-1 px-3 rounded-2xl font-medium text-white bg-red-400 hover:bg-red-500 transition-colors
-              ${watchedPriority === "urgent" ? "ring-2 ring-offset-2 ring-red-500 bg-red-500" : ""}`}
-          >
-            Urgent
-          </button>
-          <button
-            type="button"
-            onClick={() => handlePrioritySelect("high")}
-            disabled={isSubmitting}
-            className={`flex-1 py-1 px-3 rounded-2xl font-medium text-white bg-yellow-600 hover:bg-yellow-700 transition-colors
-              ${watchedPriority === "high" ? "ring-2 ring-offset-2 ring-yellow-700 bg-yellow-700" : ""}`}
-          >
-            High
-          </button>
-          <button
-            type="button"
-            onClick={() => handlePrioritySelect("low")}
-            disabled={isSubmitting}
-            className={`flex-1 py-1 px-3 rounded-2xl font-medium text-white bg-teal-600 hover:bg-teal-700 transition-colors
-              ${watchedPriority === "low" ? "ring-2 ring-offset-2 ring-teal-700 bg-teal-700" : ""}`}
-          >
-            Low
-          </button>
+          {priorityButtons.map(button => (
+            <button
+              key={button.id}
+              type="button"
+              onClick={() => handlePrioritySelect(button.id)}
+              disabled={isSubmitting}
+              className={`${button.baseClass} ${watchedPriority === button.id ? button.activeClass : ""}`}
+            >
+              {button.label}
+            </button>
+          ))}
         </div>
         {errors.priority && (
           <p className="text-red-500 text-xs mt-1">{errors.priority.message}</p>

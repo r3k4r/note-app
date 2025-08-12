@@ -3,27 +3,27 @@
 import { motion } from "framer-motion"
 import NoteCard from "@/components/notes/NoteCard"
 
-export default function NotesList({ notes, onDelete, onEdit }) {
-  // Group and sort notes by priority
-  const sortNotesByPriority = () => {
-    const urgent = notes.filter((note) => note.priority === "urgent")
-    const high = notes.filter((note) => note.priority === "high")
-    const low = notes.filter((note) => note.priority === "low")
-    return [...urgent, ...high, ...low]
-  }
+// Utility function defined outside component
+const sortNotesByPriority = (notes) => {
+  const urgent = notes.filter((note) => note.priority === "urgent")
+  const high = notes.filter((note) => note.priority === "high")
+  const low = notes.filter((note) => note.priority === "low")
+  return [...urgent, ...high, ...low]
+}
 
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.05,
-      },
+// Animation variants defined outside component
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.05,
     },
-  };
+  },
+};
 
-  const sortedNotes = sortNotesByPriority();
+export default function NotesList({ notes, onDelete, onEdit }) {
+  const sortedNotes = sortNotesByPriority(notes);
 
   return (
     <div className="relative">
