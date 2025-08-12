@@ -4,34 +4,19 @@ import { useState, useRef, useEffect } from "react"
 import { Plus, Grid3X3, List, X, AlertTriangle } from "lucide-react"
 import EmptyState from "@/components/EmptyState"
 import NoteCard from "@/components/Note-Card"
-
+import { useAuth } from "@/components/AuthContext"
+import { toast } from "sonner"
+import { useRouter } from "next/navigation"
+import NoteSkeleton from "@/components/NoteSkeleton"
 
 export default function NotesDashboard() {
   const [viewMode, setViewMode] = useState("grid")
   const [openDialog, setOpenDialog] = useState(false)
-  const [notes, setNotes] = useState([
-    {
-      id: 1,
-      title: "Sample Note 1",
-      content: "This is a sample note content.",
-      date: "2023-10-01",
-      priority: "urgent"
-    },
-    {
-      id: 2,
-      title: "Sample Note 2",
-      content: "This is another sample note content.",
-      date: "2023-10-02",
-      priority: "high"
-    },
-    {
-      id: 3,
-      title: "Sample Note 3",
-      content: "This is yet another sample note content.",
-      date: "2023-10-03",
-      priority: "low"
-    }
-  ])
+  const [notes, setNotes] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
+  const [isCreatingNote, setIsCreatingNote] = useState(false)
+  const { user } = useAuth()
+  const router = useRouter()
   
   const [newNote, setNewNote] = useState({
     title: "",
@@ -43,9 +28,45 @@ export default function NotesDashboard() {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [noteToDelete, setNoteToDelete] = useState(null)
   
-  
   const dialogRef = useRef(null)
   const deleteDialogRef = useRef(null)
+
+  // Fetch notes when component mounts or user changes
+  useEffect(() => {
+    if (user) {
+      fetchNotes()
+    } else {
+      // If not logged in, redirect to login
+      router.push('/login')
+    }
+  }, [user])
+
+  // Fetch notes from the API
+  const fetchNotes = async () => {
+    if (!user || !user.id) {
+      toast.error("User not authenticated")
+      return
+    }
+
+    setIsLoading(true)
+    try {
+      const response = await fetch(
+        `https://688b2b592a52cabb9f506d87.mockapi.io/api/v1/users/${user.id}/notes`
+      )
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch notes")
+      }
+
+      const fetchedNotes = await response.json()
+      setNotes(fetchedNotes)
+    } catch (error) {
+      console.error("Error fetching notes:", error)
+      toast.error("Failed to load notes. Please try again.")
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   // Handle click outside to close dialog
   useEffect(() => {
@@ -92,20 +113,61 @@ export default function NotesDashboard() {
     setNewNote(prev => ({ ...prev, priority }))
   }
 
-  // Handle form submission
-  const handleSubmit = (e) => {
+  // Handle form submission - Create a new note
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    // Add new note to the notes array
-    setNotes(prev => [...prev, { ...newNote }])
-    // Reset form
-    setNewNote({
-      title: "",
-      content: "",
-      date: "",
-      priority: ""
-    })
-    // Close dialog
-    setOpenDialog(false)
+    
+    if (!user || !user.id) {
+      toast.error("Please log in to create notes")
+      return
+    }
+    
+    if (!newNote.priority) {
+      toast.error("Please select a priority level")
+      return
+    }
+
+    setIsCreatingNote(true)
+    
+    try {
+      const response = await fetch(
+        `https://688b2b592a52cabb9f506d87.mockapi.io/api/v1/users/${user.id}/notes`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(newNote),
+        }
+      )
+
+      if (!response.ok) {
+        throw new Error("Failed to create note")
+      }
+
+      const createdNote = await response.json()
+      
+      // Add new note to the notes array
+      setNotes(prev => [...prev, createdNote])
+      
+      // Reset form
+      setNewNote({
+        title: "",
+        content: "",
+        date: "",
+        priority: ""
+      })
+      
+      // Close dialog
+      setOpenDialog(false)
+      
+      toast.success("Note created successfully!")
+    } catch (error) {
+      console.error("Error creating note:", error)
+      toast.error("Failed to create note. Please try again.")
+    } finally {
+      setIsCreatingNote(false)
+    }
   }
 
   // Handle note deletion - updated to show confirmation first
@@ -118,9 +180,31 @@ export default function NotesDashboard() {
   }
 
   // Confirm and execute note deletion
-  const confirmDeleteNote = () => {
-    if (noteToDelete) {
+  const confirmDeleteNote = async () => {
+    if (!noteToDelete || !user || !user.id) {
+      toast.error("Unable to delete note")
+      return
+    }
+    
+    try {
+      const response = await fetch(
+        `https://688b2b592a52cabb9f506d87.mockapi.io/api/v1/users/${user.id}/notes/${noteToDelete.id}`,
+        {
+          method: 'DELETE',
+        }
+      )
+
+      if (!response.ok) {
+        throw new Error("Failed to delete note")
+      }
+
+      // Update local state
       setNotes((prev) => prev.filter((note) => note.id !== noteToDelete.id))
+      toast.success("Note deleted successfully!")
+    } catch (error) {
+      console.error("Error deleting note:", error)
+      toast.error("Failed to delete note. Please try again.")
+    } finally {
       setDeleteDialogOpen(false)
       setNoteToDelete(null)
     }
@@ -152,6 +236,7 @@ export default function NotesDashboard() {
       return [...urgent, ...high, ...low]
     }
   }
+
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">
@@ -188,8 +273,13 @@ export default function NotesDashboard() {
           </div>
         </div>
 
+      {/* Loading State */}
+      {isLoading && (
+        <NoteSkeleton />
+      )}
+
       {/* Empty State */}
-      { notes.length === 0 ? 
+      {!isLoading && notes.length === 0 ? 
         <EmptyState />
         :
         <div className="max-w-7xl mx-auto relative">
@@ -214,7 +304,7 @@ export default function NotesDashboard() {
       }
 
       {/* Notes List */}
-      {viewMode === "grid" ? (
+      {!isLoading && viewMode === "grid" ? (
         notes.length !== 0 && 
              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 relative">
               <div className="hidden md:contents">
@@ -254,13 +344,15 @@ export default function NotesDashboard() {
               </div>
             </div>
           ) : (
-            <div className="flex justify-center">
-              <div className="space-y-4 ml-20"> {/* Added ml-20 to make space for the legend */}
-                {groupNotesByPriority().map((note) => (
-                  <NoteCard key={note.id} note={note} onDelete={handleDeleteNote} viewMode={viewMode} />
-                ))}
+            !isLoading && notes.length > 0 && (
+              <div className="flex justify-center">
+                <div className="space-y-4 ml-20"> {/* Added ml-20 to make space for the legend */}
+                  {groupNotesByPriority().map((note) => (
+                    <NoteCard key={note.id} note={note} onDelete={handleDeleteNote} viewMode={viewMode} />
+                  ))}
+                </div>
               </div>
-            </div>
+            )
           )}
       
 
@@ -276,6 +368,7 @@ export default function NotesDashboard() {
               onClick={() => setOpenDialog(false)}
               className="absolute top-3 right-3 text-gray-600 rounded-full p-1 transition-all duration-200 transform hover:scale-110"
               aria-label="Close dialog"
+              disabled={isCreatingNote}
             >
               <X className="w-5 h-5" />
             </button>
@@ -297,6 +390,7 @@ export default function NotesDashboard() {
                   value={newNote.title}
                   onChange={handleInputChange}
                   required
+                  disabled={isCreatingNote}
                   className={`w-full p-2 border rounded-md transition-colors duration-200
                     ${newNote.title 
                       ? 'border-2 border-green-500' 
@@ -317,6 +411,7 @@ export default function NotesDashboard() {
                   value={newNote.content}
                   onChange={handleInputChange}
                   required
+                  disabled={isCreatingNote}
                   rows={4}
                   className={`w-full p-2 border rounded-md transition-colors duration-200
                     ${newNote.content 
@@ -339,6 +434,7 @@ export default function NotesDashboard() {
                   value={newNote.date}
                   onChange={handleInputChange}
                   required
+                  disabled={isCreatingNote}
                   className={`w-full p-2 border rounded-md transition-colors duration-200
                     ${newNote.date 
                       ? 'border-2 border-green-500' 
@@ -356,6 +452,7 @@ export default function NotesDashboard() {
                   <button
                     type="button"
                     onClick={() => handlePrioritySelect("urgent")}
+                    disabled={isCreatingNote}
                     className={`flex-1 py-1 px-3 rounded-2xl font-medium text-white bg-red-400 hover:bg-red-500 transition-colors
                       ${newNote.priority === "urgent" ? "ring-2 ring-offset-2 ring-red-500 bg-red-500" : ""}`}
                   >
@@ -364,6 +461,7 @@ export default function NotesDashboard() {
                   <button
                     type="button"
                     onClick={() => handlePrioritySelect("high")}
+                    disabled={isCreatingNote}
                     className={`flex-1 py-1 px-3 rounded-2xl font-medium text-white bg-yellow-600 hover:bg-yellow-700 transition-colors
                       ${newNote.priority === "high" ? "ring-2 ring-offset-2 ring-yellow-700 bg-yellow-700" : ""}`}
                   >
@@ -372,6 +470,7 @@ export default function NotesDashboard() {
                   <button
                     type="button"
                     onClick={() => handlePrioritySelect("low")}
+                    disabled={isCreatingNote}
                     className={`flex-1 py-1 px-3 rounded-2xl font-medium text-white bg-teal-600 hover:bg-teal-700 transition-colors
                       ${newNote.priority === "low" ? "ring-2 ring-offset-2 ring-teal-700 bg-teal-700" : ""}`}
                   >
@@ -384,9 +483,10 @@ export default function NotesDashboard() {
               <div className="pt-2 flex justify-center">
                 <button
                   type="submit"
-                  className="w-full sm:w-auto px-5 py-1.5 text-white font-medium rounded-lg bg-gradient-to-r from-left to-right"
+                  disabled={isCreatingNote}
+                  className="w-full sm:w-auto px-5 py-1.5 text-white font-medium rounded-lg bg-gradient-to-r from-left to-right disabled:opacity-70"
                 >
-                  Add Note
+                  {isCreatingNote ? "Creating Note..." : "Add Note"}
                 </button>
               </div>
             </form>

@@ -7,7 +7,7 @@ export default function NoteCard({ note, onDelete, viewMode = "grid" }) {
   const [isChecked, setIsChecked] = useState(false)
   const [isExpanded, setIsExpanded] = useState(false)
   
-  const contentLimit = 50
+  const contentLimit = 70
   const isContentLong = note.content.length > contentLimit
 
   const getPriorityColor = (priority) => {
