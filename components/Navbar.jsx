@@ -4,12 +4,14 @@ import Image from "next/image"
 import Link from "next/link"
 import { useState, useRef, useEffect } from "react"
 import { useAuth } from "./AuthContext"
+import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 
 const Navbar = () => {
   const { user, logout } = useAuth()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [logoutDialogOpen, setLogoutDialogOpen] = useState(false)
-  
+  const router = useRouter()
   const logoutDialogRef = useRef(null)
 
   // Handle click outside to close logout dialog
@@ -33,6 +35,10 @@ const Navbar = () => {
   const handleLogout = () => {
     logout()
     setLogoutDialogOpen(false)
+    toast.success('Logout successful!')
+    setTimeout(() => {
+        router.push('/login')
+      }, 1500) 
   }
 
   return (
@@ -41,7 +47,6 @@ const Navbar = () => {
         {/* Logo */}
         <div className='flex-shrink-0'>
             <Image src={'/Logo.svg'} alt='' width={144} height={38} />
-            
         </div>
 
         {/* Desktop Navigation */}

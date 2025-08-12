@@ -2,16 +2,65 @@
 
 import Image from "next/image"
 import { useState } from "react"
+import { toast } from "sonner"
+import { useAuth } from "@/components/AuthContext"
+import { useRouter } from "next/navigation"
 
 const Login = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
+  const { login } = useAuth()
+  const router = useRouter()
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log("Login attempt:", { email, password }) //later replace with actual login logic
+    setIsLoading(true)
+    
+    try {
+      // Query the API to find a user with the provided email
+      const response = await fetch(
+        `https://688b2b592a52cabb9f506d87.mockapi.io/api/v1/users?email=${encodeURIComponent(email)}`
+      )
+      
+      if (!response.ok) {
+        throw new Error('Network response was not ok')
+      }
+      
+      const users = await response.json()
+      console.log('Users found:', users);
+      
+      
+      // Check if a user with this email exists
+      if (users.length === 0) {
+        toast.error('User not found. Please check your email or sign up.')
+        return
+      }
+      
+      const user = users[0]
+      
+      // Verify the password
+      if (user.password !== password) {
+        toast.error('Incorrect password. Please try again.')
+        return
+      }
+      
+      // Login successful
+      login(user)
+      toast.success('Login successful!')
+      
+      // Redirect to home page after successful login
+      setTimeout(() => {
+        router.push('/')
+      }, 1500)
+      
+    } catch (error) {
+      console.error('Login error:', error)
+      toast.error('Failed to login. Please try again later.')
+    } finally {
+      setIsLoading(false)
+    }
   }
-
 
   return (
     <div className='max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10 flex items-center justify-between'>
@@ -43,6 +92,7 @@ const Login = () => {
                     onChange={(e) => setEmail(e.target.value)}
                     className="w-full p-2 border-2 border-gray-300 rounded-sm bg-white text-gray-600 placeholder:text-gray-400"
                     required
+                    disabled={isLoading}
                 />
                 </div>
 
@@ -58,15 +108,17 @@ const Login = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     className="w-full p-2 border-2 border-gray-300 rounded-sm bg-white text-gray-600 placeholder:text-gray-400"
                     required
+                    disabled={isLoading}
                 />
                 </div>
 
                 <div className='flex justify-end'>
                     <button
-                    type="submit"
-                    className="w-fit px-6 py-1 bg-gradient-to-r from-left to-right text-white font-medium rounded-md"
+                      type="submit"
+                      className="w-fit px-6 py-1 bg-gradient-to-r from-left to-right text-white font-medium rounded-md disabled:opacity-70"
+                      disabled={isLoading}
                     >
-                    LOGIN
+                      {isLoading ? "LOGGING IN..." : "LOGIN"}
                     </button>
                 </div>
             </form>
