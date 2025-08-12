@@ -61,12 +61,7 @@ export default function NotesDashboard() {
   };
 
   const fetchNotes = useCallback(async () => {
-    if (!user || !user.id) {
-      toast.error("User not authenticated")
-      return
-    }
-
-    setIsLoading(true)
+     setIsLoading(true)
     try {
       const response = await fetch(
         `https://688b2b592a52cabb9f506d87.mockapi.io/api/v1/users/${user.id}/notes`
@@ -264,7 +259,7 @@ export default function NotesDashboard() {
         <div className="max-w-7xl mx-auto relative">
           {viewMode === "list" && (
             /* Priority Legend for List View - now vertical */
-            <div className="mb-6 flex flex-col gap-3 text-sm absolute left-0 top-0">
+            <div className="mb-10 sm:mb-6 flex sm:flex-col gap-3 text-sm sm:absolute left-0 top-0">
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 bg-red-400 rounded-full"></div>
                 <span className="text-gray-600">Urgent</span>
@@ -282,7 +277,7 @@ export default function NotesDashboard() {
         </div>
       }
 
-      {/* Notes List - Ensure viewMode is passed to all components */}
+      {/* Notes List */}
       <AnimatePresence mode="wait">
         {!isLoading && (
           <motion.div
@@ -362,7 +357,7 @@ export default function NotesDashboard() {
                   initial="hidden"
                   animate="visible"
                 >
-                  <div className="space-y-4 ml-20">
+                  <div className="space-y-4 sm:ml-10 md:ml-20">
                     {groupNotesByPriority().map((note) => (
                       <NoteCard 
                         key={note.id} 
