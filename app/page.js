@@ -73,7 +73,8 @@ export default function NotesDashboard() {
       )
 
       if (!response.ok) {
-        toast.error("Failed to load notes. Please try again.")
+        toast.error("No Notes to Show. Please try again.")
+        return
       }
 
       const fetchedNotes = await response.json()
@@ -162,6 +163,7 @@ export default function NotesDashboard() {
 
       if (!response.ok) {
         toast.error("Failed to delete note. Please try again.")
+        return
       }
 
       // Update local state
