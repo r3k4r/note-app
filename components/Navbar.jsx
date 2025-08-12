@@ -18,26 +18,7 @@ const Navbar = () => {
   const logoutDialogRef = useRef(null)
   const menuRef = useRef(null)
 
-  // Handle click outside to close logout dialog
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (logoutDialogRef.current && !logoutDialogRef.current.contains(event.target)) {
-        setLogoutDialogOpen(false)
-      }
-      
-      if (menuRef.current && !menuRef.current.contains(event.target) && !event.target.closest('.hamburger-icon')) {
-        setIsMenuOpen(false)
-      }
-    }
-    
-    if (logoutDialogOpen || isMenuOpen) {
-      document.addEventListener("mousedown", handleClickOutside)
-    }
-    
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
-    }
-  }, [logoutDialogOpen, isMenuOpen])
+
 
   // Handle logout
   const handleLogout = () => {
