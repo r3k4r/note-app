@@ -12,8 +12,6 @@ import {
 import { motion } from "framer-motion"
 import { Spinner } from "@/components/ui/spinner"
 
-
-
 const getPriorityColor = (priority) => {
   switch (priority) {
     case "urgent":
@@ -41,12 +39,12 @@ export default function DeleteNoteDialog({ noteToDelete, open, onClose, onConfir
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md rounded-3xl">
+      <DialogContent className="sm:max-w-md rounded-3xl dark:bg-gray-800 dark:border-gray-700">
         <DialogHeader>
-          <DialogTitle className="text-xl font-bold text-center text-black">
+          <DialogTitle className="text-xl font-bold text-center text-black dark:text-white">
             Delete this <span className={getPriorityColor(noteToDelete?.priority)}>Note</span>?
           </DialogTitle>
-          <DialogDescription className="text-center">
+          <DialogDescription className="text-center dark:text-gray-300">
             To be confirmed, it will not be possible to restore the deleted note.
           </DialogDescription>
         </DialogHeader>
@@ -77,4 +75,5 @@ export default function DeleteNoteDialog({ noteToDelete, open, onClose, onConfir
     </Dialog>
   )
 }
+ 
 

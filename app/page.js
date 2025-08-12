@@ -120,7 +120,7 @@ export default function NotesDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-8">
       {/* Header */}
       <NoteHeader 
         viewMode={viewMode} 
@@ -153,7 +153,7 @@ export default function NotesDashboard() {
       {/* Delete Confirmation Dialog - Updated to use open prop */}
       <DeleteNoteDialog 
         noteToDelete={noteToDelete}
-        open={deleteDialogOpen}  // Pass the open state prop
+        open={deleteDialogOpen}
         onClose={() => setDeleteDialogOpen(false)}
         onConfirm={confirmDeleteNote}
       />

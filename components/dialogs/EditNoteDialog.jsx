@@ -68,7 +68,7 @@ export default function EditNoteDialog({ isOpen, onClose, onSuccess, noteData })
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="flex items-center text-black">
+          <DialogTitle className="flex items-center text-black dark:text-white">
             Edit Note
             {isSubmitting && <Spinner size="sm" color="black" className="ml-2" />}
           </DialogTitle>

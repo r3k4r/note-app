@@ -62,14 +62,14 @@ const EmptyState = () => {
 
       {/* Text Content */}
       <motion.h2
-        className="text-xl font-medium text-gray-700 mb-4"
+        className="text-xl font-medium text-gray-700 dark:text-gray-200 mb-4"
         variants={itemVariants}
       >
         No note here...
       </motion.h2>
 
       <motion.p
-        className="text-gray-500 text-sm leading-relaxed"
+        className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed"
         variants={itemVariants}
       >
         Add notes and get

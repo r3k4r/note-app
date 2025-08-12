@@ -44,7 +44,7 @@ export default function NoteSkeleton({ viewMode = "grid", count = 3 }) {
         <div className="hidden xl:contents">
           <div className="text-center mb-4">
             <motion.div 
-              className="h-6 w-20 bg-gray-200 rounded-md mx-auto animate-pulse"
+              className="h-6 w-20 bg-gray-200 dark:bg-gray-700 rounded-md mx-auto animate-pulse"
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
@@ -52,7 +52,7 @@ export default function NoteSkeleton({ viewMode = "grid", count = 3 }) {
           </div>
           <div className="text-center mb-4">
             <motion.div 
-              className="h-6 w-20 bg-gray-200 rounded-md mx-auto animate-pulse"
+              className="h-6 w-20 bg-gray-200 dark:bg-gray-700 rounded-md mx-auto animate-pulse"
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
@@ -60,7 +60,7 @@ export default function NoteSkeleton({ viewMode = "grid", count = 3 }) {
           </div>
           <div className="text-center mb-4">
             <motion.div 
-              className="h-6 w-20 bg-gray-200 rounded-md mx-auto animate-pulse"
+              className="h-6 w-20 bg-gray-200 dark:bg-gray-700 rounded-md mx-auto animate-pulse"
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
@@ -68,12 +68,9 @@ export default function NoteSkeleton({ viewMode = "grid", count = 3 }) {
           </div>
         </div>
 
-        {/* Mobile/Tablet headers for smaller screens */}
-       
-
         {/* Divider lines - only on xl screens */}
-        <div className="hidden xl:block absolute left-1/3 top-0 bottom-0 border-l-2 border-dashed border-gray-200 transform -translate-x-1/2"></div>
-        <div className="hidden xl:block absolute left-2/3 top-0 bottom-0 border-l-2 border-dashed border-gray-200 transform -translate-x-1/2"></div>
+        <div className="hidden xl:block absolute left-1/3 top-0 bottom-0 border-l-2 border-dashed border-gray-200 dark:border-gray-700 transform -translate-x-1/2"></div>
+        <div className="hidden xl:block absolute left-2/3 top-0 bottom-0 border-l-2 border-dashed border-gray-200 dark:border-gray-700 transform -translate-x-1/2"></div>
             
         {/* Urgent Column */}
         <motion.div 
@@ -238,3 +235,4 @@ export default function NoteSkeleton({ viewMode = "grid", count = 3 }) {
     </div>
   );
 }
+    

@@ -31,15 +31,15 @@ export default function NotesList({ notes, onDelete, onEdit }) {
       <div className="mb-10 sm:mb-6 flex sm:flex-col gap-3 text-sm sm:absolute left-0 top-0">
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 bg-red-400 rounded-full"></div>
-          <span className="text-gray-600">Urgent</span>
+          <span className="text-gray-600 dark:text-gray-300">Urgent</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 bg-orange-400 rounded-full"></div>
-          <span className="text-gray-600">High</span>
+          <span className="text-gray-600 dark:text-gray-300">High</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 bg-teal-400 rounded-full"></div>
-          <span className="text-gray-600">Low</span>
+          <span className="text-gray-600 dark:text-gray-300">Low</span>
         </div>
       </div>
 

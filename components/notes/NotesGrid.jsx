@@ -44,8 +44,8 @@ export default function NotesGrid({ notes, onDelete, onEdit }) {
         </div>
       </div>
 
-      <div className="hidden xl:block absolute left-1/3 top-0 bottom-0 border-l-2 border-dashed border-gray-300 transform -translate-x-1/2"></div>
-      <div className="hidden xl:block absolute left-2/3 top-0 bottom-0 border-l-2 border-dashed border-gray-300 transform -translate-x-1/2"></div>
+      <div className="hidden xl:block absolute left-1/3 top-0 bottom-0 border-l-2 border-dashed border-gray-300 dark:border-gray-700 transform -translate-x-1/2"></div>
+      <div className="hidden xl:block absolute left-2/3 top-0 bottom-0 border-l-2 border-dashed border-gray-300 dark:border-gray-700 transform -translate-x-1/2"></div>
     
       {/* Urgent Column */}
       <div className="space-y-4 flex flex-col items-center">
