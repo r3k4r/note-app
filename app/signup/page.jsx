@@ -13,6 +13,7 @@ const SignUp = () => {
   const [showPasswordRequirements, setShowPasswordRequirements] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [passwordError, setPasswordError] = useState("")
+  const [confirmPasswordTouched, setConfirmPasswordTouched] = useState(false)
   const { signup } = useAuth()
   const router = useRouter()
 
@@ -81,6 +82,20 @@ const SignUp = () => {
       setIsLoading(false)
     }
   }
+
+  const handleConfirmPasswordChange = (e) => {
+    setConfirmPassword(e.target.value)
+  }
+
+  //this function is called when the confirm password input loses focus
+  //it sets the confirmPasswordTouched state to true so when the user leaves the input, 
+  //then the error will be shown if the passwords do not match
+  const handleConfirmPasswordBlur = () => {
+    setConfirmPasswordTouched(true)
+  }
+
+  const passwordsMatch = password === confirmPassword
+  const showPasswordMatchError = confirmPasswordTouched && !passwordsMatch && confirmPassword.length > 0
 
   return (
     <div className='max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10 flex items-center justify-between'>
@@ -163,15 +178,16 @@ const SignUp = () => {
                     type="password"
                     placeholder="Confirm Your Password"
                     value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    onChange={handleConfirmPasswordChange}
+                    onBlur={handleConfirmPasswordBlur}
                     className={`w-full p-2 border-2 ${
-                      password && confirmPassword && password !== confirmPassword 
+                      showPasswordMatchError 
                       ? "border-red-300" : "border-gray-300"
                     } rounded-sm bg-white text-gray-600 placeholder:text-gray-400`}
                     required
                     disabled={isLoading}
                 />
-                {password && confirmPassword && password !== confirmPassword && (
+                {showPasswordMatchError && (
                   <p className="text-red-500 text-xs mt-1">Passwords don't match</p>
                 )}
                 </div>
