@@ -209,6 +209,16 @@ export default function NotesDashboard() {
   }
 
 
+  // Handle view mode change
+  const handleViewModeChange = (mode) => {
+    setViewMode(mode);
+  };
+
+  // Add debug useEffect to monitor viewMode changes
+  useEffect(() => {
+    console.log("Current view mode:", viewMode);
+  }, [viewMode]);
+
   return (
     <div className="min-h-screen bg-gray-100 p-8">
       {/* Header */}
@@ -223,39 +233,34 @@ export default function NotesDashboard() {
           Add
         </button>
 
-        {/* LIST AND GRID TOGGLE */}
-        <motion.div 
-          className="bg-white border border-gray-300 rounded-xl shadow-sm flex overflow-hidden"
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-        >
-          <motion.button
-            onClick={() => setViewMode("grid")}
+        {/* LIST AND GRID TOGGLE - SIMPLIFIED */}
+        <div className="bg-white border border-gray-300 rounded-xl shadow-sm flex overflow-hidden">
+          <button
+            onClick={() => handleViewModeChange("grid")}
             className={`p-2 px-4 rounded-l-lg transition-colors ${
-              viewMode === "grid" ? "bg-gray-200 text-gray-800" : "text-gray-600 hover:bg-gray-50"
+              viewMode === "grid" 
+                ? "bg-gray-200 text-gray-800 font-medium" 
+                : "text-gray-600 hover:bg-gray-100 active:scale-95"
             }`}
-            whileHover={{ backgroundColor: viewMode === "grid" ? "" : "rgba(0,0,0,0.05)" }}
-            whileTap={{ scale: 0.95 }}
           >
             <Grid3X3 className="w-4 h-4" />
-          </motion.button>
-          <motion.button
-            onClick={() => setViewMode("list")}
+          </button>
+          <button
+            onClick={() => handleViewModeChange("list")}
             className={`p-2 px-4 rounded-r-lg transition-colors ${
-              viewMode === "list" ? "bg-gray-200 text-gray-800" : "text-gray-600 hover:bg-gray-50"
+              viewMode === "list" 
+                ? "bg-gray-200 text-gray-800 font-medium" 
+                : "text-gray-600 hover:bg-gray-100 active:scale-95"
             }`}
-            whileHover={{ backgroundColor: viewMode === "list" ? "" : "rgba(0,0,0,0.05)" }}
-            whileTap={{ scale: 0.95 }}
           >
             <List className="w-4 h-4" />
-          </motion.button>
-        </motion.div>
+          </button>
+        </div>
       </div>
 
-      {/* Loading State */}
+      {/* Loading State - Updated to pass viewMode */}
       {isLoading && (
-        <NoteSkeleton />
+        <NoteSkeleton viewMode={viewMode} />
       )}
 
       {/* Empty State */}
@@ -283,11 +288,11 @@ export default function NotesDashboard() {
         </div>
       }
 
-      {/* Notes List */}
+      {/* Notes List - Ensure viewMode is passed to all components */}
       <AnimatePresence mode="wait">
         {!isLoading && (
           <motion.div
-            key={viewMode} // This forces a re-render when view mode changes
+            key={`view-${viewMode}`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -363,14 +368,14 @@ export default function NotesDashboard() {
                   initial="hidden"
                   animate="visible"
                 >
-                  <div className="space-y-4 ml-20"> {/* Added ml-20 to make space for the legend */}
+                  <div className="space-y-4 ml-20">
                     {groupNotesByPriority().map((note) => (
                       <NoteCard 
                         key={note.id} 
                         note={note} 
                         onDelete={handleDeleteNote} 
                         onEdit={handleEditNote}
-                        viewMode={viewMode} 
+                        viewMode="list" // Force viewMode to ensure it's correct
                       />
                     ))}
                   </div>
@@ -445,4 +450,4 @@ export default function NotesDashboard() {
     </div>
   )
 }
-           
+             
