@@ -1,8 +1,8 @@
 "use client"
 
 import { motion, AnimatePresence } from "framer-motion"
-import EmptyState from "@/components/EmptyState"
-import NoteSkeleton from "@/components/NoteSkeleton"
+import EmptyState from "@/components/notes/EmptyState"
+import NoteSkeleton from "@/components/notes/NoteSkeleton"
 import NotesGrid from "./NotesGrid"
 import NotesList from "./NotesList"
 

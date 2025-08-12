@@ -2,10 +2,10 @@
 
 import { useState, useRef, useEffect } from "react"
 import { toast } from "sonner"
-import { useAuth } from "./AuthContext"
+import { useAuth } from "../AuthContext"
 import { axiosClient, API_PATHS } from "@/config"
-import CreateNoteDialog from "./dialogs/CreateNoteDialog"
-import EditNoteDialog from "./dialogs/EditNoteDialog"
+import CreateNoteDialog from "../dialogs/CreateNoteDialog"
+import EditNoteDialog from "../dialogs/EditNoteDialog"
 
 export default function NoteDialog({ 
   isOpen, 
