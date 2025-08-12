@@ -4,6 +4,7 @@ import Link from "next/link"
 import { useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Menu, X } from "lucide-react"
+import ThemeToggle from "../theme/ThemeToggle"
 
 export default function MobileNavigation({ isLoggedIn, isMenuOpen, setIsMenuOpen, onLogoutClick }) {
   const menuRef = useRef(null)
@@ -11,7 +12,9 @@ export default function MobileNavigation({ isLoggedIn, isMenuOpen, setIsMenuOpen
   return (
     <>
       {/* Hamburger Menu Icon - Show for all users on mobile */}
-      <div className="block md:hidden">
+      <div className="md:hidden flex items-center space-x-4">
+        <ThemeToggle />
+
         <button 
           className="hamburger-icon p-2"
           onClick={() => setIsMenuOpen(!isMenuOpen)}

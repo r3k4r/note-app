@@ -2,6 +2,7 @@ import Navbar from "@/components/Navbar";
 import "./globals.css";
 import { AuthProvider } from "@/components/AuthContext";
 import { Toaster } from "sonner";
+import ThemeProvider from "@/components/theme/ThemeProvider";
 
 export const metadata = {
   title: "Note App",
@@ -12,11 +13,13 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <AuthProvider>
-          <Navbar />
-          {children}
-          <Toaster />
-        </AuthProvider>
+        <ThemeProvider>
+          <AuthProvider>
+            <Navbar />
+            {children}
+            <Toaster />
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
