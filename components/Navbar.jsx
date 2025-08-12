@@ -46,7 +46,7 @@ const Navbar = () => {
       <div className='max-w-7xl mx-auto flex items-center justify-between py-4 md:py-6 '>
         {/* Logo */}
         <div className='flex-shrink-0'>
-            <Image src={'/Logo.svg'} alt='' width={144} height={38} />
+            <Image src={'/logo.svg'} alt='' width={144} height={38} />
         </div>
 
         {/* Desktop Navigation */}

@@ -67,7 +67,7 @@ const Login = () => {
         {/* LEFT-SIDE */}
         <div className='w-fit'>
             {/* SVG */}
-            <Image src={'/Frame.svg'} alt='' width={360} height={360} />
+            <Image src={'/frame.svg'} alt='' width={360} height={360} />
 
             <div className=''>
                 <h1 className="text-5xl py-2 font-bold text-center mt-2 bg-gradient-to-r from-left to-right text-transparent bg-clip-text">

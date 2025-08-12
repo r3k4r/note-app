@@ -8,7 +8,7 @@ export default async function middleware(req) {
 
     
     // Routes that are always public (accessible to everyone)
-    const publicRoutes = ['']
+    const publicRoutes = ['/frame.svg', '/logo.svg',]
     
     // Public routes when logged out, private when logged in
     const authRoutes = ['/login', '/signup']

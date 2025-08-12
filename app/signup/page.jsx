@@ -87,7 +87,7 @@ const SignUp = () => {
         {/* LEFT-SIDE */}
         <div className='w-fit'>
             {/* SVG */}
-            <Image src={'/Frame.svg'} alt='' width={360} height={360} />
+            <Image src={'/frame.svg'} alt='' width={360} height={360} />
             
 
             <div className=''>
