@@ -92,9 +92,6 @@ export default function NotesDashboard() {
   useEffect(() => {
     if (user) {
       fetchNotes()
-    } else {
-      // If not logged in, redirect to login
-      router.push('/login')
     }
   }, [user])
 
