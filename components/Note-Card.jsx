@@ -151,7 +151,7 @@ export default function NoteCard({ note, onDelete, onEdit, viewMode = "grid" }) 
 
   return (
     <motion.div 
-      className={`${getPriorityColor(note.priority)} rounded-lg p-4 text-white relative w-[380px] flex flex-col transition-all duration-300 ${isChecked ? 'opacity-70' : ''}`}
+      className={`${getPriorityColor(note.priority)} rounded-lg p-4 text-white relative max-w-[380px] w-full flex flex-col transition-all duration-300 ${isChecked ? 'opacity-70' : ''}`}
       variants={cardVariants}
       initial="hidden"
       animate="visible"

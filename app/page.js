@@ -290,25 +290,25 @@ export default function NotesDashboard() {
             {viewMode === "grid" ? (
               notes.length !== 0 && 
                 <motion.div 
-                  className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 relative"
+                  className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-4 xl:gap-6 relative"
                   variants={containerVariants}
                   initial="hidden"
                   animate="visible"
                 >
-                  <div className="hidden md:contents">
+                  <div className="hidden xl:contents">
                     <div className="text-center mb-4">
-                      <h3 className="text-lg font-semibold text-red-500 mb-4">Urgent</h3>
+                      <h3 className="text-xl font-semibold text-red-500 mb-4">Urgent</h3>
                     </div>
                     <div className="text-center mb-4">
-                      <h3 className="text-lg font-semibold text-orange-500 mb-4">High</h3>
+                      <h3 className="text-xl font-semibold text-orange-500 mb-4">High</h3>
                     </div>
                     <div className="text-center mb-4">
-                      <h3 className="text-lg font-semibold text-teal-500 mb-4">Low</h3>
+                      <h3 className="text-xl font-semibold text-teal-500 mb-4">Low</h3>
                     </div>
                   </div>
 
-                  <div className="hidden md:block absolute left-1/3 top-0 bottom-0 border-l-2 border-dashed border-gray-300 transform -translate-x-1/2"></div>
-                  <div className="hidden md:block absolute left-2/3 top-0 bottom-0 border-l-2 border-dashed border-gray-300 transform -translate-x-1/2"></div>
+                  <div className="hidden xl:block absolute left-1/3 top-0 bottom-0 border-l-2 border-dashed border-gray-300 transform -translate-x-1/2"></div>
+                  <div className="hidden xl:block absolute left-2/3 top-0 bottom-0 border-l-2 border-dashed border-gray-300 transform -translate-x-1/2"></div>
                 
                 {/* Urgent Column */}
                 <div className="space-y-4 flex flex-col items-center">
@@ -364,7 +364,7 @@ export default function NotesDashboard() {
                         note={note} 
                         onDelete={handleDeleteNote} 
                         onEdit={handleEditNote}
-                        viewMode="list" // Force viewMode to ensure it's correct
+                        viewMode="list" 
                       />
                     ))}
                   </div>
