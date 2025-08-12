@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Plus } from "lucide-react";
+import Image from "next/image";
 
 const EmptyState = () => {
   const containerVariants = {
@@ -31,75 +31,53 @@ const EmptyState = () => {
     },
   };
 
+  const imageVariants = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 15,
+        delay: 0.1,
+      },
+    },
+  };
+
   return (
     <motion.div
-      className="w-full text-center py-16 px-4"
+      className="w-full flex flex-col items-center justify-center min-h-[50vh] text-center"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
     >
+      {/* Empty State Image */}
       <motion.div
-        className="max-w-md mx-auto rounded-lg border-2 border-dashed border-gray-300 p-12 bg-gray-50"
+        className="mb-12"
+        variants={imageVariants}
+      >
+        <Image src={'/Empty-icon.svg'} width={202} height={180} alt="Empty Icon" />
+      </motion.div>
+
+      {/* Text Content */}
+      <motion.h2
+        className="text-xl font-medium text-gray-700 mb-4"
         variants={itemVariants}
       >
-        <motion.div
-          className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6"
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{
-            type: "spring",
-            stiffness: 500,
-            damping: 15,
-            delay: 0.3,
-          }}
-        >
-          <Plus className="w-8 h-8 text-gray-400" />
-        </motion.div>
+        No note here...
+      </motion.h2>
 
-        <motion.h3
-          className="text-lg font-medium text-gray-900 mb-2"
-          variants={itemVariants}
-        >
-          No Notes Yet
-        </motion.h3>
-
-        <motion.p
-          className="text-sm text-gray-500 mb-4"
-          variants={itemVariants}
-        >
-          Create your first note by clicking the "Add" button above.
-        </motion.p>
-
-        <motion.div
-          className="text-sm text-gray-500"
-          variants={itemVariants}
-        >
-          <p>Organize your thoughts by priority:</p>
-          <div className="flex justify-center gap-2 mt-3">
-            <motion.div
-              className="flex items-center"
-              whileHover={{ scale: 1.05 }}
-            >
-              <div className="w-3 h-3 bg-red-400 rounded-full mr-1"></div>
-              <span>Urgent</span>
-            </motion.div>
-            <motion.div
-              className="flex items-center"
-              whileHover={{ scale: 1.05 }}
-            >
-              <div className="w-3 h-3 bg-orange-400 rounded-full mr-1"></div>
-              <span>High</span>
-            </motion.div>
-            <motion.div
-              className="flex items-center"
-              whileHover={{ scale: 1.05 }}
-            >
-              <div className="w-3 h-3 bg-teal-400 rounded-full mr-1"></div>
-              <span>Low</span>
-            </motion.div>
-          </div>
-        </motion.div>
-      </motion.div>
+      <motion.p
+        className="text-gray-500 text-sm leading-relaxed"
+        variants={itemVariants}
+      >
+        Add notes and get
+        <br />
+        it is organized in the best
+        <br />
+        way!
+      </motion.p>
     </motion.div>
   );
 };
