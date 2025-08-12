@@ -9,7 +9,7 @@ import NoteDialog from "@/components/NoteDialog"
 import NoteHeader from "@/components/notes/NoteHeader"
 import NotesContainer from "@/components/notes/NotesContainer"
 import DeleteNoteDialog from "@/components/notes/DeleteNoteDialog"
-import { ENDPOINTS } from "@/config"
+import { axiosClient, API_PATHS } from "@/config"
 
 export default function NotesDashboard() {
   const [viewMode, setViewMode] = useState("grid")
@@ -24,26 +24,19 @@ export default function NotesDashboard() {
   const { user } = useAuth()
   const router = useRouter()
 
-  // Fetch notes from API
+  // Fetch notes from API using axios
   const fetchNotes = useCallback(async () => {
     if (!user || !user.id) return;
     
-    setIsLoading(true)
+    setIsLoading(true);
     try {
-      const response = await fetch(ENDPOINTS.NOTES(user.id))
-
-      if (!response.ok) {
-        toast.error("No Notes to Show. Please try again.")
-        return
-      }
-
-      const fetchedNotes = await response.json()
-      setNotes(fetchedNotes)
+      const response = await axiosClient.get(API_PATHS.NOTES(user.id));
+      setNotes(response.data);
     } catch (error) {
-      console.error("Error fetching notes:", error)
-      toast.error("Failed to load notes. Please try again.")
+      console.error("Error fetching notes:", error);
+      toast.error("Failed to load notes. Please try again.");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }, [user]) 
   
@@ -90,7 +83,7 @@ export default function NotesDashboard() {
     }
   }
 
-  // Confirm and execute note deletion
+  // Confirm and execute note deletion with axios
   const confirmDeleteNote = async () => {
     if (!noteToDelete || !user || !user.id) {
       toast.error("Unable to delete note")
@@ -98,18 +91,8 @@ export default function NotesDashboard() {
     }
     
     try {
-      const response = await fetch(
-        ENDPOINTS.NOTE(user.id, noteToDelete.id),
-        {
-          method: 'DELETE',
-        }
-      )
-
-      if (!response.ok) {
-        toast.error("Failed to delete note. Please try again.")
-        return
-      }
-
+      await axiosClient.delete(API_PATHS.NOTE(user.id, noteToDelete.id))
+      
       // Update local state
       setNotes((prev) => prev.filter((note) => note.id !== noteToDelete.id))
       toast.success("Note deleted successfully!")
@@ -163,5 +146,4 @@ export default function NotesDashboard() {
     </div>
   )
 }
-
-
+           

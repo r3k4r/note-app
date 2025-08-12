@@ -5,7 +5,7 @@ import { toast } from "sonner"
 import { useAuth } from "../AuthContext"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import NoteForm from "./NoteForm"
-import { ENDPOINTS } from "@/config"
+import { axiosClient, API_PATHS } from "@/config"
 
 export default function CreateNoteDialog({ isOpen, onClose, onSuccess }) {
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -20,24 +20,11 @@ export default function CreateNoteDialog({ isOpen, onClose, onSuccess }) {
     setIsSubmitting(true)
     
     try {
-      const url = ENDPOINTS.NOTES(user.id)
-      
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      })
-
-      if (!response.ok) {
-        throw new Error("Failed to create note")
-      }
-
-      const responseData = await response.json()
+      // Create note with axios
+      const response = await axiosClient.post(API_PATHS.NOTES(user.id), data);
       
       toast.success("Note created successfully!")
-      onSuccess(responseData)
+      onSuccess(response.data)
       onClose()
       
     } catch (error) {
@@ -64,3 +51,4 @@ export default function CreateNoteDialog({ isOpen, onClose, onSuccess }) {
     </Dialog>
   )
 }
+       

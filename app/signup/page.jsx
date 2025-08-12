@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation"
 import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { ENDPOINTS, APP_CONFIG } from "@/config"
+import { axiosClient, API_PATHS, APP_CONFIG } from "@/config"
 
 // Create a schema with Zod for signup validation
 const signupSchema = z.object({
@@ -61,26 +61,16 @@ const SignUp = () => {
     setIsLoading(true)
     
     try {
-      const response = await fetch(ENDPOINTS.USERS, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ 
-          email: data.email, 
-          password: data.password 
-        }),
-      })
+      // Create user with axios
+      const response = await axiosClient.post(API_PATHS.USERS, { 
+        email: data.email, 
+        password: data.password 
+      });
       
-      if (!response.ok) {
-        toast.error('Failed to create account. Please try again.')
-        return
-      }
-      
-      const userData = await response.json()
+      const userData = response.data;
       
       // Save user data in auth context
-      signup(userData)
+      signup(userData);
       
       toast.success('Account created successfully!')
       

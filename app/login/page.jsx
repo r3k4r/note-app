@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation"
 import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { ENDPOINTS, APP_CONFIG } from "@/config"
+import { axiosClient, API_PATHS, APP_CONFIG } from "@/config"
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address" }),
@@ -36,17 +36,10 @@ const Login = () => {
     setIsLoading(true)
     
     try {
-      // Query the API to find a user with the provided email
-      const response = await fetch(
-        `${ENDPOINTS.USERS}?email=${encodeURIComponent(data.email)}`
-      )
+      // Query the API using axios
+      const response = await axiosClient.get(API_PATHS.USER_BY_EMAIL(data.email));
       
-      if (!response.ok) {
-        toast.error('User Not Found. Please try again later.')
-        return
-      }
-      
-      const users = await response.json()
+      const users = response.data;
       
       // Check if a user with this email exists
       if (users.length === 0) {
