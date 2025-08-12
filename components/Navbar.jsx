@@ -5,7 +5,7 @@ import Link from "next/link"
 import { useState, useRef, useEffect } from "react"
 
 const Navbar = () => {
-  const [session, setSession] = useState("null") // Placeholder for session management, replace with actual session logic
+  const [session, setSession] = useState(null) // Placeholder for session management, replace with actual session logic
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [logoutDialogOpen, setLogoutDialogOpen] = useState(false)
   
