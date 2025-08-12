@@ -1,9 +1,7 @@
 /**
  * Application configuration
  */
-import axiosClient from './axios';
 
-// Export axios client
 export { default as axiosClient } from './axios';
 
 // API base URL
@@ -26,5 +24,5 @@ export const ENDPOINTS = {
 
 // Other configuration settings can be added here
 export const APP_CONFIG = {
-  AUTH_TIMEOUT: 1500, // Milliseconds to wait before redirecting after auth actions
+  AUTH_TIMEOUT: 1500, 
 };

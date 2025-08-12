@@ -24,7 +24,7 @@ export default function NotesDashboard() {
   const { user } = useAuth()
   const router = useRouter()
 
-  // Fetch notes from API using axios
+  // Fetch notes 
   const fetchNotes = useCallback(async () => {
     if (!user || !user.id) return;
     
@@ -45,7 +45,7 @@ export default function NotesDashboard() {
     if (user) {
       fetchNotes()
     }
-  }, [user, fetchNotes, router]) 
+  }, [user, fetchNotes]) 
 
   // Handle opening create note dialog
   const openCreateNoteDialog = () => {
@@ -74,7 +74,7 @@ export default function NotesDashboard() {
     }
   }
 
-  // Handle note deletion - updated to show confirmation first
+  // Handle note deletion 
   const handleDeleteNote = (noteId, priority) => {
     const noteToRemove = notes.find(note => note.id === noteId)
     if (noteToRemove) {
@@ -89,7 +89,7 @@ export default function NotesDashboard() {
     });
   }
 
-  // Confirm and execute note deletion with axios
+  // Confirm and execute note deletion 
   const confirmDeleteNote = async () => {
     if (!noteToDelete || !user || !user.id) {
       toast.error("Unable to delete note")
