@@ -88,12 +88,7 @@ export default function NotesDashboard() {
   
   // Fetch notes when component mounts or user changes
   useEffect(() => {
-    if (user) {
       fetchNotes()
-    } else {
-      // If not logged in, redirect to login
-      router.push('/login')
-    }
   }, [user, fetchNotes, router]) 
 
 
