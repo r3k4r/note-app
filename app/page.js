@@ -84,7 +84,7 @@ export default function NotesDashboard() {
     } finally {
       setIsLoading(false)
     }
-  }, [user, toast, setNotes, setIsLoading]) 
+  }, [user, setNotes, setIsLoading]) 
   
   // Fetch notes when component mounts or user changes
   useEffect(() => {
@@ -96,7 +96,7 @@ export default function NotesDashboard() {
     }
   }, [user, fetchNotes, router]) 
 
-  
+
   // Handle click outside to close delete dialog
   useEffect(() => {
     function handleClickOutside(event) {
