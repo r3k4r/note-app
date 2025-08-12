@@ -38,9 +38,9 @@ export default function NoteSkeleton({ viewMode = "grid", count = 3 }) {
   // Skeleton for grid view
   if (viewMode === "grid") {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 relative">
-        {/* Column headers */}
-        <div className="hidden md:contents">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 xl:gap-6 relative">
+        {/* XL screens column headers */}
+        <div className="hidden xl:contents">
           <div className="text-center mb-4">
             <motion.div 
               className="h-6 w-20 bg-gray-200 rounded-md mx-auto animate-pulse"
@@ -67,9 +67,12 @@ export default function NoteSkeleton({ viewMode = "grid", count = 3 }) {
           </div>
         </div>
 
-        {/* Divider lines */}
-        <div className="hidden md:block absolute left-1/3 top-0 bottom-0 border-l-2 border-dashed border-gray-200 transform -translate-x-1/2"></div>
-        <div className="hidden md:block absolute left-2/3 top-0 bottom-0 border-l-2 border-dashed border-gray-200 transform -translate-x-1/2"></div>
+        {/* Mobile/Tablet headers for smaller screens */}
+       
+
+        {/* Divider lines - only on xl screens */}
+        <div className="hidden xl:block absolute left-1/3 top-0 bottom-0 border-l-2 border-dashed border-gray-200 transform -translate-x-1/2"></div>
+        <div className="hidden xl:block absolute left-2/3 top-0 bottom-0 border-l-2 border-dashed border-gray-200 transform -translate-x-1/2"></div>
             
         {/* Urgent Column */}
         <motion.div 
@@ -81,7 +84,7 @@ export default function NoteSkeleton({ viewMode = "grid", count = 3 }) {
           {skeletons.map((index) => (
             <motion.div 
               key={`urgent-${index}`} 
-              className={`rounded-lg p-4 w-[380px] ${getRandomHeight()} animate-pulse bg-red-200 flex flex-col relative`}
+              className={`rounded-lg p-4 w-full max-w-xs sm:max-w-sm xl:max-w-[380px] ${getRandomHeight()} animate-pulse bg-red-200 flex flex-col relative`}
               variants={itemVariants}
             >
               <div className="flex mb-3">
@@ -109,7 +112,7 @@ export default function NoteSkeleton({ viewMode = "grid", count = 3 }) {
           {skeletons.map((index) => (
             <motion.div 
               key={`high-${index}`} 
-              className={`rounded-lg p-4 w-[380px] ${getRandomHeight()} animate-pulse bg-orange-200 flex flex-col relative`}
+              className={`rounded-lg p-4 w-full max-w-xs sm:max-w-sm xl:max-w-[380px] ${getRandomHeight()} animate-pulse bg-orange-200 flex flex-col relative`}
               variants={itemVariants}
               transition={{ delay: index * 0.05 + 0.2 }}
             >
@@ -138,7 +141,7 @@ export default function NoteSkeleton({ viewMode = "grid", count = 3 }) {
           {skeletons.map((index) => (
             <motion.div 
               key={`low-${index}`} 
-              className={`rounded-lg p-4 w-[380px] ${getRandomHeight()} animate-pulse bg-teal-200 flex flex-col relative`}
+              className={`rounded-lg p-4 w-full max-w-xs sm:max-w-sm xl:max-w-[380px] ${getRandomHeight()} animate-pulse bg-teal-200 flex flex-col relative`}
               variants={itemVariants}
               transition={{ delay: index * 0.05 + 0.4 }}
             >
@@ -164,7 +167,7 @@ export default function NoteSkeleton({ viewMode = "grid", count = 3 }) {
   return (
     <div className="flex justify-center">
       <motion.div 
-        className="space-y-4 ml-20"
+        className="space-y-4 ml-0 sm:ml-10 md:ml-20 w-full max-w-md sm:max-w-lg md:max-w-xl"
         variants={containerVariants}
         initial="hidden"
         animate="show"
@@ -172,7 +175,7 @@ export default function NoteSkeleton({ viewMode = "grid", count = 3 }) {
         {skeletons.map((index) => (
           <motion.div 
             key={`list-${index}`} 
-            className={`rounded-lg p-4 w-[450px] h-[130px] animate-pulse ${
+            className={`rounded-lg p-4 w-full max-w-full sm:max-w-[450px] h-[130px] animate-pulse ${
               index % 3 === 0 
                 ? "bg-red-200" 
                 : index % 3 === 1 
@@ -191,15 +194,15 @@ export default function NoteSkeleton({ viewMode = "grid", count = 3 }) {
               }`}></div>
               
               <div className="flex flex-col flex-1">
-                <div className="flex items-center justify-between gap-12 mb-3 px-4">
-                  <div className={`h-5 rounded w-32 ${
+                <div className="flex items-center justify-between gap-3 sm:gap-12 mb-3 px-4">
+                  <div className={`h-5 rounded w-24 sm:w-32 ${
                     index % 3 === 0 
                       ? "bg-red-300" 
                       : index % 3 === 1 
                         ? "bg-orange-300" 
                         : "bg-teal-300"
                   }`}></div>
-                  <div className={`h-5 rounded w-20 ${
+                  <div className={`h-5 rounded w-16 sm:w-20 ${
                     index % 3 === 0 
                       ? "bg-red-300" 
                       : index % 3 === 1 
