@@ -1,0 +1,141 @@
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { noteSchema } from "./NoteSchema"
+
+export default function NoteForm({ defaultValues, onSubmit, isSubmitting, mode = "create" }) {
+  const { 
+    register, 
+    handleSubmit, 
+    setValue, 
+    watch, 
+    formState: { errors } 
+  } = useForm({
+    resolver: zodResolver(noteSchema),
+    defaultValues: defaultValues || {
+      title: "",
+      content: "",
+      date: "",
+      priority: ""
+    }
+  });
+
+  const watchedPriority = watch("priority");
+
+  const handlePrioritySelect = (priority) => {
+    setValue("priority", priority, { shouldValidate: true });
+  };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      {/* Title Input */}
+      <div>
+        <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
+          Title
+        </label>
+        <input
+          id="title"
+          className={`w-full p-2 border rounded-md transition-colors duration-200
+            ${errors.title ? 'border-red-300' : 'border-gray-300'} 
+            focus:outline-none focus:ring-2 focus:ring-gray-200`}
+          placeholder="Title"
+          disabled={isSubmitting}
+          {...register("title")}
+        />
+        {errors.title && (
+          <p className="text-red-500 text-xs mt-1">{errors.title.message}</p>
+        )}
+      </div>
+      
+      {/* Content Textarea */}
+      <div>
+        <label htmlFor="content" className="block text-sm font-medium text-gray-700 mb-1">
+          Content
+        </label>
+        <textarea
+          id="content"
+          rows={4}
+          className={`w-full p-2 border rounded-md transition-colors duration-200
+            ${errors.content ? 'border-red-300' : 'border-gray-300'} 
+            focus:outline-none focus:ring-2 focus:ring-gray-200`}
+          placeholder="Content"
+          disabled={isSubmitting}
+          {...register("content")}
+        />
+        {errors.content && (
+          <p className="text-red-500 text-xs mt-1">{errors.content.message}</p>
+        )}
+      </div>
+      
+      {/* Date Input */}
+      <div>
+        <label htmlFor="date" className="block text-sm font-medium text-gray-700 mb-1">
+          Date
+        </label>
+        <input
+          type="date"
+          id="date"
+          className={`w-full p-2 border rounded-md transition-colors duration-200
+            ${errors.date ? 'border-red-300' : 'border-gray-300'} 
+            focus:outline-none focus:ring-2 focus:ring-gray-200`}
+          disabled={isSubmitting}
+          {...register("date")}
+        />
+        {errors.date && (
+          <p className="text-red-500 text-xs mt-1">{errors.date.message}</p>
+        )}
+      </div>
+      
+      {/* Priority Buttons */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Priority Level
+        </label>
+        <div className="flex gap-3">
+          <button
+            type="button"
+            onClick={() => handlePrioritySelect("urgent")}
+            disabled={isSubmitting}
+            className={`flex-1 py-1 px-3 rounded-2xl font-medium text-white bg-red-400 hover:bg-red-500 transition-colors
+              ${watchedPriority === "urgent" ? "ring-2 ring-offset-2 ring-red-500 bg-red-500" : ""}`}
+          >
+            Urgent
+          </button>
+          <button
+            type="button"
+            onClick={() => handlePrioritySelect("high")}
+            disabled={isSubmitting}
+            className={`flex-1 py-1 px-3 rounded-2xl font-medium text-white bg-yellow-600 hover:bg-yellow-700 transition-colors
+              ${watchedPriority === "high" ? "ring-2 ring-offset-2 ring-yellow-700 bg-yellow-700" : ""}`}
+          >
+            High
+          </button>
+          <button
+            type="button"
+            onClick={() => handlePrioritySelect("low")}
+            disabled={isSubmitting}
+            className={`flex-1 py-1 px-3 rounded-2xl font-medium text-white bg-teal-600 hover:bg-teal-700 transition-colors
+              ${watchedPriority === "low" ? "ring-2 ring-offset-2 ring-teal-700 bg-teal-700" : ""}`}
+          >
+            Low
+          </button>
+        </div>
+        {errors.priority && (
+          <p className="text-red-500 text-xs mt-1">{errors.priority.message}</p>
+        )}
+      </div>
+      
+      {/* Submit Button */}
+      <div className="pt-2 flex justify-center">
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="w-full sm:w-auto px-5 py-1.5 text-white font-medium rounded-lg bg-gradient-to-r from-left to-right disabled:opacity-70"
+        >
+          {mode === "create" 
+            ? (isSubmitting ? "Creating Note..." : "Add Note") 
+            : (isSubmitting ? "Updating Note..." : "Update Note")}
+        </button>
+      </div>
+    </form>
+  );
+}
