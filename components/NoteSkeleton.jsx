@@ -1,5 +1,7 @@
 "use client"
 
+import { motion } from "framer-motion"
+
 export default function NoteSkeleton({ viewMode = "grid", count = 3 }) {
   // Create an array of the specified count to render multiple skeletons
   const skeletons = Array.from({ length: count }, (_, i) => i);
@@ -9,6 +11,30 @@ export default function NoteSkeleton({ viewMode = "grid", count = 3 }) {
     return heights[Math.floor(Math.random() * heights.length)];
   };
 
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    show: { 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 24
+      }
+    }
+  };
+
   // Skeleton for grid view
   if (viewMode === "grid") {
     return (
@@ -16,13 +42,28 @@ export default function NoteSkeleton({ viewMode = "grid", count = 3 }) {
         {/* Column headers */}
         <div className="hidden md:contents">
           <div className="text-center mb-4">
-            <div className="h-6 w-20 bg-gray-200 rounded-md mx-auto animate-pulse"></div>
+            <motion.div 
+              className="h-6 w-20 bg-gray-200 rounded-md mx-auto animate-pulse"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+            ></motion.div>
           </div>
           <div className="text-center mb-4">
-            <div className="h-6 w-20 bg-gray-200 rounded-md mx-auto animate-pulse"></div>
+            <motion.div 
+              className="h-6 w-20 bg-gray-200 rounded-md mx-auto animate-pulse"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            ></motion.div>
           </div>
           <div className="text-center mb-4">
-            <div className="h-6 w-20 bg-gray-200 rounded-md mx-auto animate-pulse"></div>
+            <motion.div 
+              className="h-6 w-20 bg-gray-200 rounded-md mx-auto animate-pulse"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+            ></motion.div>
           </div>
         </div>
 
@@ -31,11 +72,17 @@ export default function NoteSkeleton({ viewMode = "grid", count = 3 }) {
         <div className="hidden md:block absolute left-2/3 top-0 bottom-0 border-l-2 border-dashed border-gray-200 transform -translate-x-1/2"></div>
             
         {/* Urgent Column */}
-        <div className="space-y-4 flex flex-col items-center">
+        <motion.div 
+          className="space-y-4 flex flex-col items-center"
+          variants={containerVariants}
+          initial="hidden"
+          animate="show"
+        >
           {skeletons.map((index) => (
-            <div 
+            <motion.div 
               key={`urgent-${index}`} 
               className={`rounded-lg p-4 w-[380px] ${getRandomHeight()} animate-pulse bg-red-200 flex flex-col relative`}
+              variants={itemVariants}
             >
               <div className="flex mb-3">
                 <div className="w-5 h-5 rounded-md bg-red-300 mr-3"></div>
@@ -48,16 +95,23 @@ export default function NoteSkeleton({ viewMode = "grid", count = 3 }) {
                 <div className="h-4 bg-red-300 rounded w-full mb-2"></div>
                 <div className="h-4 bg-red-300 rounded w-3/4"></div>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {/* High Priority Column */}
-        <div className="space-y-4 flex flex-col items-center">
+        <motion.div 
+          className="space-y-4 flex flex-col items-center"
+          variants={containerVariants}
+          initial="hidden"
+          animate="show"
+        >
           {skeletons.map((index) => (
-            <div 
+            <motion.div 
               key={`high-${index}`} 
               className={`rounded-lg p-4 w-[380px] ${getRandomHeight()} animate-pulse bg-orange-200 flex flex-col relative`}
+              variants={itemVariants}
+              transition={{ delay: index * 0.05 + 0.2 }}
             >
               <div className="flex mb-3">
                 <div className="w-5 h-5 rounded-md bg-orange-300 mr-3"></div>
@@ -70,16 +124,23 @@ export default function NoteSkeleton({ viewMode = "grid", count = 3 }) {
                 <div className="h-4 bg-orange-300 rounded w-full mb-2"></div>
                 <div className="h-4 bg-orange-300 rounded w-3/4"></div>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {/* Low Priority Column */}
-        <div className="space-y-4 flex flex-col items-center">
+        <motion.div 
+          className="space-y-4 flex flex-col items-center"
+          variants={containerVariants}
+          initial="hidden"
+          animate="show"
+        >
           {skeletons.map((index) => (
-            <div 
+            <motion.div 
               key={`low-${index}`} 
               className={`rounded-lg p-4 w-[380px] ${getRandomHeight()} animate-pulse bg-teal-200 flex flex-col relative`}
+              variants={itemVariants}
+              transition={{ delay: index * 0.05 + 0.4 }}
             >
               <div className="flex mb-3">
                 <div className="w-5 h-5 rounded-md bg-teal-300 mr-3"></div>
@@ -92,9 +153,9 @@ export default function NoteSkeleton({ viewMode = "grid", count = 3 }) {
                 <div className="h-4 bg-teal-300 rounded w-full mb-2"></div>
                 <div className="h-4 bg-teal-300 rounded w-3/4"></div>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     );
   }
@@ -102,9 +163,14 @@ export default function NoteSkeleton({ viewMode = "grid", count = 3 }) {
   // Skeleton for list view
   return (
     <div className="flex justify-center">
-      <div className="space-y-4 ml-20">
+      <motion.div 
+        className="space-y-4 ml-20"
+        variants={containerVariants}
+        initial="hidden"
+        animate="show"
+      >
         {skeletons.map((index) => (
-          <div 
+          <motion.div 
             key={`list-${index}`} 
             className={`rounded-lg p-4 w-[450px] h-[130px] animate-pulse ${
               index % 3 === 0 
@@ -113,6 +179,7 @@ export default function NoteSkeleton({ viewMode = "grid", count = 3 }) {
                   ? "bg-orange-200" 
                   : "bg-teal-200"
             } relative mb-4`}
+            variants={itemVariants}
           >
             <div className="flex h-full w-full">
               <div className={`w-5 h-5 rounded-md mr-3 ${
@@ -161,9 +228,9 @@ export default function NoteSkeleton({ viewMode = "grid", count = 3 }) {
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </div>
   );
 }

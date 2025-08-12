@@ -42,8 +42,8 @@ const Navbar = () => {
   }
 
   return (
-    <nav className='w-full  px-4 sm:px-6 lg:px-8 border-b-2 border-Ten'>
-      <div className='max-w-7xl mx-auto flex items-center justify-between py-4 md:py-6 '>
+    <nav className='w-full  px-4 sm:px-6 lg:px-8 border-b-2 border-Ten bg-gray-100'>
+      <div className='max-w-7xl mx-auto flex items-center justify-between py-4 md:py-6'>
         {/* Logo */}
         <div className='flex-shrink-0'>
             <Image src={'/logo.svg'} alt='' width={144} height={38} />
