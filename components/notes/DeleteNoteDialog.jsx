@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import {
   Dialog,
   DialogContent,
@@ -10,18 +11,40 @@ import {
 } from "@/components/ui/dialog"
 import { motion } from "framer-motion"
 
-export default function DeleteNoteDialog({ noteToDelete, onClose, onConfirm, open }) {
+export default function DeleteNoteDialog({ noteToDelete, open, onClose, onConfirm }) {
+  const [isDeleting, setIsDeleting] = useState(false)
+
+  const handleConfirm = async () => {
+    setIsDeleting(true)
+    await onConfirm()
+    setIsDeleting(false)
+  }
+
+  // Get priority label
+  const getPriorityLabel = (priority) => {
+    switch (priority) {
+      case "urgent":
+        return "Urgent"
+      case "high":
+        return "High Priority"
+      case "low":
+        return "Low Priority"
+      default:
+        return "Normal"
+    }
+  }
+
   // Get priority color
   const getPriorityColor = (priority) => {
     switch (priority) {
       case "urgent":
-        return "text-red-400"
+        return "text-red-500"
       case "high":
-        return "text-orange-400"
+        return "text-orange-500"
       case "low":
-        return "text-teal-400"
+        return "text-teal-500"
       default:
-        return "text-gray-400"
+        return "text-gray-500"
     }
   }
 

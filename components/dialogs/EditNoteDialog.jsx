@@ -6,6 +6,7 @@ import { useAuth } from "../AuthContext"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import NoteForm from "./NoteForm"
 import { ENDPOINTS } from "@/config"
+import { Spinner } from "@/components/ui/spinner"
 
 export default function EditNoteDialog({ isOpen, onClose, onSuccess, noteData }) {
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -67,7 +68,10 @@ export default function EditNoteDialog({ isOpen, onClose, onSuccess, noteData })
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Edit Note</DialogTitle>
+          <DialogTitle className="flex items-center">
+            Edit Note
+            {isSubmitting && <Spinner size="sm" color="black" className="ml-2" />}
+          </DialogTitle>
         </DialogHeader>
         
         <NoteForm 

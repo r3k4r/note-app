@@ -79,14 +79,24 @@ export default function NotesDashboard() {
     const noteToRemove = notes.find(note => note.id === noteId)
     if (noteToRemove) {
       setNoteToDelete({ ...noteToRemove, id: noteId, priority })
-      setDeleteDialogOpen(true)  // Make sure this is being set to true
+      setDeleteDialogOpen(true)
     }
+    
+    // Return a promise that will be resolved after deletion completes
+    return new Promise((resolve) => {
+      // Store resolve function to call it after deletion
+      window._currentDeleteResolve = resolve;
+    });
   }
 
   // Confirm and execute note deletion with axios
   const confirmDeleteNote = async () => {
     if (!noteToDelete || !user || !user.id) {
       toast.error("Unable to delete note")
+      if (window._currentDeleteResolve) {
+        window._currentDeleteResolve();
+        window._currentDeleteResolve = null;
+      }
       return
     }
     
@@ -102,6 +112,10 @@ export default function NotesDashboard() {
     } finally {
       setDeleteDialogOpen(false)
       setNoteToDelete(null)
+      if (window._currentDeleteResolve) {
+        window._currentDeleteResolve();
+        window._currentDeleteResolve = null;
+      }
     }
   }
 
@@ -146,4 +160,3 @@ export default function NotesDashboard() {
     </div>
   )
 }
-           

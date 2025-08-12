@@ -1,6 +1,10 @@
+"use client"
+
+import { useState, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { noteSchema } from "./NoteSchema"
+import { Spinner } from "@/components/ui/spinner"
 
 export default function NoteForm({ defaultValues, onSubmit, isSubmitting, mode = "create" }) {
   const { 
@@ -129,11 +133,16 @@ export default function NoteForm({ defaultValues, onSubmit, isSubmitting, mode =
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full sm:w-auto px-5 py-1.5 text-white font-medium rounded-lg bg-gradient-to-r from-left to-right disabled:opacity-70"
+          className="w-full sm:w-auto px-5 py-1.5 text-white font-medium rounded-lg bg-gradient-to-r from-left to-right disabled:opacity-70 flex items-center justify-center"
         >
-          {mode === "create" 
-            ? (isSubmitting ? "Creating Note..." : "Add Note") 
-            : (isSubmitting ? "Updating Note..." : "Update Note")}
+          {isSubmitting ? (
+            <>
+              <Spinner size="sm" className="mr-2" />
+              {mode === "create" ? "Creating..." : "Updating..."}
+            </>
+          ) : (
+            mode === "create" ? "Create Note" : "Update Note"
+          )}
         </button>
       </div>
     </form>

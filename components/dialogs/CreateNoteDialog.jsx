@@ -6,6 +6,7 @@ import { useAuth } from "../AuthContext"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import NoteForm from "./NoteForm"
 import { axiosClient, API_PATHS } from "@/config"
+import { Spinner } from "@/components/ui/spinner"
 
 export default function CreateNoteDialog({ isOpen, onClose, onSuccess }) {
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -39,7 +40,10 @@ export default function CreateNoteDialog({ isOpen, onClose, onSuccess }) {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Add New Note</DialogTitle>
+          <DialogTitle className="flex items-center">
+            Add New Note
+            {isSubmitting && <Spinner size="sm" color="black" className="ml-2" />}
+          </DialogTitle>
         </DialogHeader>
         
         <NoteForm 
@@ -51,4 +55,4 @@ export default function CreateNoteDialog({ isOpen, onClose, onSuccess }) {
     </Dialog>
   )
 }
-       
+
