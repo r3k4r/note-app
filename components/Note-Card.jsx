@@ -33,7 +33,7 @@ export default function NoteCard({ note, onDelete, viewMode = "grid" }) {
     return (
       <div className={`${getPriorityColor(note.priority)} rounded-lg p-4 text-white relative mb-4 w-[450px] ${isExpanded ? 'h-auto' : 'h-[130px]'} transition-all duration-300 ${isChecked ? 'opacity-70' : ''}`}>
         <button
-          onClick={() => onDelete(note.id)}
+          onClick={() => onDelete(note.id, note.priority)}
           className="absolute top-2 right-2 text-white hover:text-gray-200 transition-colors"
         >
           <X className="w-4 h-4" />
@@ -92,7 +92,7 @@ export default function NoteCard({ note, onDelete, viewMode = "grid" }) {
   return (
     <div className={`${getPriorityColor(note.priority)} rounded-lg p-4 text-white relative w-[380px] ${isExpanded ? 'h-auto' : 'h-[130px]'} flex flex-col transition-all duration-300 ${isChecked ? 'opacity-70' : ''}`}>
       <button
-        onClick={() => onDelete(note.id)}
+        onClick={() => onDelete(note.id, note.priority)}
         className="absolute top-2 right-2 text-white hover:text-gray-200 transition-colors"
       >
         <X className="w-4 h-4" />

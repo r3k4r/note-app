@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useRef, useEffect } from "react"
-import { Plus, Grid3X3, List, X } from "lucide-react"
+import { Plus, Grid3X3, List, X, AlertTriangle } from "lucide-react"
 import EmptyState from "@/components/EmptyState"
 import NoteCard from "@/components/Note-Card"
 
@@ -40,8 +40,12 @@ export default function NotesDashboard() {
     priority: ""
   })
 
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+  const [noteToDelete, setNoteToDelete] = useState(null)
+  
   
   const dialogRef = useRef(null)
+  const deleteDialogRef = useRef(null)
 
   // Handle click outside to close dialog
   useEffect(() => {
@@ -59,6 +63,23 @@ export default function NotesDashboard() {
       document.removeEventListener("mousedown", handleClickOutside)
     }
   }, [openDialog])
+
+  // Handle click outside to close delete dialog
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (deleteDialogRef.current && !deleteDialogRef.current.contains(event.target)) {
+        setDeleteDialogOpen(false)
+      }
+    }
+    
+    if (deleteDialogOpen) {
+      document.addEventListener("mousedown", handleClickOutside)
+    }
+    
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [deleteDialogOpen])
 
   // Handle input changes
   const handleInputChange = (e) => {
@@ -87,10 +108,36 @@ export default function NotesDashboard() {
     setOpenDialog(false)
   }
 
+  // Handle note deletion - updated to show confirmation first
+  const handleDeleteNote = (noteId, priority) => {
+    const noteToRemove = notes.find(note => note.id === noteId)
+    if (noteToRemove) {
+      setNoteToDelete({ ...noteToRemove, id: noteId, priority })
+      setDeleteDialogOpen(true)
+    }
+  }
 
-  // Handle note deletion
-   const handleDeleteNote = (noteId) => {
-    setNotes((prev) => prev.filter((note) => note.id !== noteId))
+  // Confirm and execute note deletion
+  const confirmDeleteNote = () => {
+    if (noteToDelete) {
+      setNotes((prev) => prev.filter((note) => note.id !== noteToDelete.id))
+      setDeleteDialogOpen(false)
+      setNoteToDelete(null)
+    }
+  }
+
+  // Get priority color
+  const getPriorityColor = (priority) => {
+    switch (priority) {
+      case "urgent":
+        return "text-red-400"
+      case "high":
+        return "text-orange-400"
+      case "low":
+        return "text-teal-400"
+      default:
+        return "text-gray-400"
+    }
   }
 
   const groupNotesByPriority = () => {
@@ -343,6 +390,40 @@ export default function NotesDashboard() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Dialog */}
+      {deleteDialogOpen && noteToDelete && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+          <div 
+            ref={deleteDialogRef}
+            className="relative bg-white rounded-3xl shadow-xl w-full max-w-sm p-8 animate-in fade-in duration-200"
+          >            
+            <h2 className="text-xl font-bold text-center mb-4">
+              Delete this <span className={getPriorityColor(noteToDelete.priority)}>Note</span>?
+            </h2>
+            
+            <p className="text-gray-600 text-sm text-center mb-6">
+              to be confirmed, It will not be possible to restore the deleted note.
+            </p>
+            
+            <div className="flex gap-4 justify-center mt-10">
+              <button
+                onClick={() => setDeleteDialogOpen(false)}
+                className="px-6 py-2 bg-green-600 hover:bg-green-500 text-sm text-white font-semibold rounded-lg transition-colors"
+              >
+                No, Cancel
+              </button>
+              
+              <button
+                onClick={confirmDeleteNote}
+                className="px-6 py-2 bg-red-600 hover:bg-red-500 text-sm text-white font-semibold rounded-lg transition-colors"
+              >
+                Yes, Delete
+              </button>
+            </div>
           </div>
         </div>
       )}
