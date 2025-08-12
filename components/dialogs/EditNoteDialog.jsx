@@ -66,11 +66,11 @@ export default function EditNoteDialog({ isOpen, onClose, onSuccess, noteData })
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md dark:bg-gray-800 dark:border-gray-700">
         <DialogHeader>
           <DialogTitle className="flex items-center text-black dark:text-white">
             Edit Note
-            {isSubmitting && <Spinner size="sm" color="black" className="ml-2" />}
+            {isSubmitting && <Spinner size="sm" color="black" className="ml-2 dark:text-white" />}
           </DialogTitle>
         </DialogHeader>
         

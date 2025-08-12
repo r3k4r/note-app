@@ -8,7 +8,7 @@ import { toast } from "sonner"
 import NoteDialog from "@/components/notes/NoteDialog"
 import NoteHeader from "@/components/notes/NoteHeader"
 import NotesContainer from "@/components/notes/NotesContainer"
-import DeleteNoteDialog from "@/components/notes/DeleteNoteDialog"
+import DeleteNoteDialog from "@/components/dialogs/DeleteNoteDialog"
 import { axiosClient, API_PATHS } from "@/config"
 
 export default function NotesDashboard() {

@@ -54,14 +54,15 @@ export default function NoteForm({ defaultValues, onSubmit, isSubmitting, mode =
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       {/* Title Input */}
       <div>
-        <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
+        <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
           Title
         </label>
         <input
           id="title"
           className={`w-full p-2 border rounded-md transition-colors duration-200
-            ${errors.title ? 'border-red-300' : 'border-gray-300'} 
-            focus:outline-none focus:ring-2 focus:ring-gray-200`}
+            ${errors.title ? 'border-red-300' : 'border-gray-300 dark:border-gray-600'} 
+            focus:outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-700
+            dark:bg-gray-700 dark:text-white`}
           placeholder="Title"
           disabled={isSubmitting}
           {...register("title")}
@@ -73,15 +74,16 @@ export default function NoteForm({ defaultValues, onSubmit, isSubmitting, mode =
       
       {/* Content Textarea */}
       <div>
-        <label htmlFor="content" className="block text-sm font-medium text-gray-700 mb-1">
+        <label htmlFor="content" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
           Content
         </label>
         <textarea
           id="content"
           rows={4}
           className={`w-full p-2 border rounded-md transition-colors duration-200
-            ${errors.content ? 'border-red-300' : 'border-gray-300'} 
-            focus:outline-none focus:ring-2 focus:ring-gray-200`}
+            ${errors.content ? 'border-red-300' : 'border-gray-300 dark:border-gray-600'} 
+            focus:outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-700
+            dark:bg-gray-700 dark:text-white`}
           placeholder="Content"
           disabled={isSubmitting}
           {...register("content")}
@@ -93,15 +95,16 @@ export default function NoteForm({ defaultValues, onSubmit, isSubmitting, mode =
       
       {/* Date Input */}
       <div>
-        <label htmlFor="date" className="block text-sm font-medium text-gray-700 mb-1">
+        <label htmlFor="date" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
           Date
         </label>
         <input
           type="date"
           id="date"
           className={`w-full p-2 border rounded-md transition-colors duration-200
-            ${errors.date ? 'border-red-300' : 'border-gray-300'} 
-            focus:outline-none focus:ring-2 focus:ring-gray-200`}
+            ${errors.date ? 'border-red-300' : 'border-gray-300 dark:border-gray-600'} 
+            focus:outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-700
+            dark:bg-gray-700 dark:text-white`}
           disabled={isSubmitting}
           {...register("date")}
         />
@@ -112,7 +115,7 @@ export default function NoteForm({ defaultValues, onSubmit, isSubmitting, mode =
       
       {/* Priority Buttons */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
           Priority Level
         </label>
         <div className="flex gap-3">

@@ -38,7 +38,7 @@ export default function CreateNoteDialog({ isOpen, onClose, onSuccess }) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md dark:bg-gray-800 dark:border-gray-700">
         <DialogHeader>
           <DialogTitle className="flex items-center text-black dark:text-white">
             Add New Note
