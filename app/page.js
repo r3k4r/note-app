@@ -214,10 +214,7 @@ export default function NotesDashboard() {
     setViewMode(mode);
   };
 
-  // Add debug useEffect to monitor viewMode changes
-  useEffect(() => {
-    console.log("Current view mode:", viewMode);
-  }, [viewMode]);
+
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">
