@@ -30,7 +30,6 @@ export default function NoteCard({ note, onDelete, viewMode = "grid" }) {
     return date.toLocaleDateString("en-GB")
   }
 
-  // Animation variants - simplified for subtle transitions
   const cardVariants = {
     hidden: { 
       opacity: 0
