@@ -13,12 +13,12 @@ import { motion } from "framer-motion"
 export default function LogoutDialog({ open, onClose, onConfirm }) {
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md rounded-3xl">
+      <DialogContent className="sm:max-w-md rounded-3xl dark:bg-gray-800 dark:border-gray-700">
         <DialogHeader>
-          <DialogTitle className="text-xl font-bold text-center text-black">
+          <DialogTitle className="text-xl font-bold text-center text-black dark:text-white">
             Do you want to <span className="text-red-500">logout </span>?
           </DialogTitle>
-          <DialogDescription className="text-center">
+          <DialogDescription className="text-center dark:text-gray-300">
             Please confirm if you want to logout.
           </DialogDescription>
         </DialogHeader>

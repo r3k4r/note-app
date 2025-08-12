@@ -33,7 +33,7 @@ export default function MobileNavigation({ isLoggedIn, isMenuOpen, setIsMenuOpen
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed inset-y-0 right-0 z-40 w-64 bg-white shadow-lg md:hidden"
+            className="fixed inset-y-0 right-0 z-40 w-64 bg-white dark:bg-gray-800 shadow-lg md:hidden"
           >
             <div className="p-6 h-full flex flex-col">
               <motion.div 
@@ -47,7 +47,7 @@ export default function MobileNavigation({ isLoggedIn, isMenuOpen, setIsMenuOpen
                   className="p-2"
                   aria-label="Close menu"
                 >
-                  <X className="h-6 w-6" />
+                  <X className="h-6 w-6 dark:text-gray-200" />
                 </button>
               </motion.div>
               
@@ -68,7 +68,7 @@ export default function MobileNavigation({ isLoggedIn, isMenuOpen, setIsMenuOpen
                         setIsMenuOpen(false);
                         onLogoutClick();
                       }}
-                      className='w-full px-6 py-2 rounded-[8px] border-2 border-gray-300 text-black text-[18px] font-medium text-center block'
+                      className='w-full px-6 py-2 rounded-[8px] border-2 border-gray-300 dark:border-gray-600 text-black dark:text-white text-[18px] font-medium text-center block'
                     >
                       Logout
                     </button>
@@ -82,7 +82,7 @@ export default function MobileNavigation({ isLoggedIn, isMenuOpen, setIsMenuOpen
                     >
                       <Link 
                         href={'/login'} 
-                        className='px-6 py-2 rounded-[8px] border-2 border-gray-300 text-black text-[18px] font-medium cursor-pointer text-center block'
+                        className='px-6 py-2 rounded-[8px] border-2 border-gray-300 dark:border-gray-600 text-black dark:text-white text-[18px] font-medium cursor-pointer text-center block'
                         onClick={() => setIsMenuOpen(false)}
                       >
                         Login

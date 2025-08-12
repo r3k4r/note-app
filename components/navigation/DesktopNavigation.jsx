@@ -12,7 +12,7 @@ export default function DesktopNavigation({ isLoggedIn, onLogoutClick }) {
         </div>
         <button 
           onClick={onLogoutClick}
-          className='w-[100px] h-[38px] rounded-[8px] border-2 border-gray-300 text-black text-[18px] font-medium'
+          className='w-[100px] h-[38px] rounded-[8px] border-2 border-gray-300 dark:border-gray-600 text-black dark:text-white text-[18px] font-medium hover:bg-gray-100 dark:hover:bg-gray-700'
         >
           Logout
         </button>
@@ -24,10 +24,10 @@ export default function DesktopNavigation({ isLoggedIn, onLogoutClick }) {
     <div className='hidden md:flex items-center space-x-4'>
       <ThemeToggle />
       
-      <Link href={'/login'} className='px-6 py-1 rounded-[8px] border-2 border-gray-300 text-black text-[18px] font-medium cursor-pointer'>
+      <Link href={'/login'} className='px-6 py-1 rounded-[8px] border-2 border-gray-300 dark:border-gray-600 text-black dark:text-white text-[18px] font-medium cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700'>
         Login
       </Link>
-      <Link href={'/signup'} className='px-6 py-1 rounded-[8px] bg-Ten text-white text-[18px] font-medium cursor-pointer'>
+      <Link href={'/signup'} className='px-6 py-1 rounded-[8px] bg-Ten text-white text-[18px] font-medium cursor-pointer hover:opacity-90'>
         Sign Up
       </Link>
     </div>
