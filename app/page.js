@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect, useCallback } from "react"
 import { Plus, Grid3X3, List, X, AlertTriangle } from "lucide-react"
 import EmptyState from "@/components/EmptyState"
 import NoteCard from "@/components/Note-Card"
@@ -60,9 +60,7 @@ export default function NotesDashboard() {
     },
   };
 
-
-  // Fetch notes from the API
-  const fetchNotes = async () => {
+  const fetchNotes = useCallback(async () => {
     if (!user || !user.id) {
       toast.error("User not authenticated")
       return
@@ -86,8 +84,8 @@ export default function NotesDashboard() {
     } finally {
       setIsLoading(false)
     }
-  }
-
+  }, [user, toast, setNotes, setIsLoading]) 
+  
   // Fetch notes when component mounts or user changes
   useEffect(() => {
     if (user) {
@@ -96,8 +94,9 @@ export default function NotesDashboard() {
       // If not logged in, redirect to login
       router.push('/login')
     }
-  }, [user, fetchNotes, router])
+  }, [user, fetchNotes, router]) 
 
+  
   // Handle click outside to close delete dialog
   useEffect(() => {
     function handleClickOutside(event) {
@@ -448,4 +447,4 @@ export default function NotesDashboard() {
     </div>
   )
 }
-             
+
