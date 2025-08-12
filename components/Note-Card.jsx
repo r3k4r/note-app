@@ -1,10 +1,10 @@
 "use client"
 
-import { X } from "lucide-react"
+import { Pencil, X } from "lucide-react"
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 
-export default function NoteCard({ note, onDelete, viewMode = "grid" }) {
+export default function NoteCard({ note, onDelete, onEdit, viewMode = "grid" }) {
   const [isChecked, setIsChecked] = useState(false)
   const [isExpanded, setIsExpanded] = useState(false)
   
@@ -159,14 +159,26 @@ export default function NoteCard({ note, onDelete, viewMode = "grid" }) {
       layout
       style={{ height: isExpanded ? 'auto' : '130px' }}
     >
-      <motion.button
-        onClick={() => onDelete(note.id, note.priority)}
-        className="absolute top-2 right-2 text-white hover:text-gray-200 transition-colors"
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-      >
-        <X className="w-4 h-4" />
-      </motion.button>
+      {/* Edit Button */}
+      <div className='flex mb-3'>
+          <motion.button
+            onClick={() => onEdit(note)}
+            className="absolute top-2 right-8 text-white hover:text-gray-200 transition-colors"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <Pencil size={16} />
+          </motion.button>
+
+          <motion.button
+            onClick={() => onDelete(note.id, note.priority)}
+            className="absolute top-2 right-2 text-white hover:text-gray-200 transition-colors"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <X className="w-4 h-4" />
+          </motion.button>
+      </div>
 
       <div className='flex h-full w-full'>
         {/* CHECK BOX */}
