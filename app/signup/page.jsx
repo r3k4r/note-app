@@ -2,22 +2,85 @@
 
 import Image from "next/image"
 import { useState } from "react"
+import { toast } from "sonner"
+import { useAuth } from "@/components/AuthContext"
+import { useRouter } from "next/navigation"
 
 const SignUp = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const [Confirmpassword, setConfirmPassword] = useState("")
+  const [confirmPassword, setConfirmPassword] = useState("")
   const [showPasswordRequirements, setShowPasswordRequirements] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [passwordError, setPasswordError] = useState("")
+  const { signup } = useAuth()
+  const router = useRouter()
 
   const passwordRequirements = [
     { text: "Minimum of 8 characters", met: password.length >= 8 },
     { text: "A minimum of 1 special character", met: /[!@#$%^&*(),.?":{}|<>]/.test(password) },
   ]
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    console.log("SignUp attempt:", { email, password }) //later replace with actual SignUp logic
+
+  const validateForm = () => {
+    // Check if passwords match
+    if (password !== confirmPassword) {
+      setPasswordError("Passwords don't match")
+      return false
+    }
+    
+    // Check if all password requirements are met
+    const allRequirementsMet = passwordRequirements.every(req => req.met)
+    if (!allRequirementsMet) {
+      setPasswordError("Password doesn't meet all requirements")
+      return false
+    }
+    
+    setPasswordError("")
+    return true
   }
 
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    
+    if (!validateForm()) {
+      toast.error(passwordError)
+      return
+    }
+    
+    setIsLoading(true)
+    
+    try {
+      const response = await fetch('https://688b2b592a52cabb9f506d87.mockapi.io/api/v1/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      })
+      
+      if (!response.ok) {
+        throw new Error('Signup failed')
+      }
+      
+      const userData = await response.json()
+      
+      // Save user data in auth context
+      signup(userData)
+      
+      toast.success('Account created successfully!')
+      
+      // Redirect to home page or login page after successful signup
+      setTimeout(() => {
+        router.push('/')
+      }, 1500)
+      
+    } catch (error) {
+      console.error('Signup error:', error)
+      toast.error('Failed to create account. Please try again.')
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   return (
     <div className='max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10 flex items-center justify-between'>
@@ -50,6 +113,7 @@ const SignUp = () => {
                     onChange={(e) => setEmail(e.target.value)}
                     className="w-full p-2 border-2 border-gray-300 rounded-sm bg-white text-gray-600 placeholder:text-gray-400"
                     required
+                    disabled={isLoading}
                 />
                 </div>
 
@@ -68,6 +132,7 @@ const SignUp = () => {
                         onBlur={() => setShowPasswordRequirements(false)}
                         className="w-full p-2 border-2 border-gray-300 rounded-sm bg-white text-gray-600 placeholder:text-gray-400"
                         required
+                        disabled={isLoading}
                     />
 
                     {/* Enhanced password requirements tooltip with smooth transitions */}
@@ -97,19 +162,27 @@ const SignUp = () => {
                     id="confirm-password"
                     type="password"
                     placeholder="Confirm Your Password"
-                    value={Confirmpassword}
+                    value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="w-full p-2 border-2 border-gray-300 rounded-sm bg-white text-gray-600 placeholder:text-gray-400"
+                    className={`w-full p-2 border-2 ${
+                      password && confirmPassword && password !== confirmPassword 
+                      ? "border-red-300" : "border-gray-300"
+                    } rounded-sm bg-white text-gray-600 placeholder:text-gray-400`}
                     required
+                    disabled={isLoading}
                 />
+                {password && confirmPassword && password !== confirmPassword && (
+                  <p className="text-red-500 text-xs mt-1">Passwords don't match</p>
+                )}
                 </div>
 
                 <div className='flex justify-end'>
                     <button
                     type="submit"
-                    className="w-fit px-6 py-1 bg-gradient-to-r from-left to-right text-white font-medium rounded-md"
+                    className="w-fit px-6 py-1 bg-gradient-to-r from-left to-right text-white font-medium rounded-md disabled:opacity-70"
+                    disabled={isLoading}
                     >
-                    SUBMIT
+                    {isLoading ? "SIGNING UP..." : "SUBMIT"}
                     </button>
                 </div>
             </form>

@@ -3,9 +3,10 @@
 import Image from "next/image"
 import Link from "next/link"
 import { useState, useRef, useEffect } from "react"
+import { useAuth } from "./AuthContext"
 
 const Navbar = () => {
-  const [session, setSession] = useState(null) // Placeholder for session management, replace with actual session logic
+  const { user, logout } = useAuth()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [logoutDialogOpen, setLogoutDialogOpen] = useState(false)
   
@@ -30,9 +31,7 @@ const Navbar = () => {
 
   // Handle logout
   const handleLogout = () => {
-    // Replace with actual logout logic
-    console.log("User logged out")
-    setSession(null)
+    logout()
     setLogoutDialogOpen(false)
   }
 
@@ -46,7 +45,7 @@ const Navbar = () => {
         </div>
 
         {/* Desktop Navigation */}
-        {session? 
+        {user? 
             <button 
               onClick={() => setLogoutDialogOpen(true)}
               className='w-[100px] h-[38px] rounded-[8px] border-2 border-gray-300 text-black text-[18px] font-medium'
