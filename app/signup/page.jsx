@@ -1,10 +1,26 @@
 'use client'
 
 import Image from "next/image"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { toast } from "sonner"
 import { useAuth } from "@/components/AuthContext"
 import { useRouter } from "next/navigation"
+import { z } from "zod"
+
+// Create a schema with Zod for signup validation
+const signupSchema = z.object({
+  email: z.string().email({ message: "Please enter a valid email address" }),
+  password: z
+    .string()
+    .min(8, { message: "Password must be at least 8 characters" })
+    .regex(/[!@#$%^&*(),.?":{}|<>]/, { 
+      message: "Password must contain at least one special character" 
+    }),
+  confirmPassword: z.string()
+}).refine(data => data.password === data.confirmPassword, {
+  message: "Passwords don't match",
+  path: ["confirmPassword"]
+})
 
 const SignUp = () => {
   const [email, setEmail] = useState("")
@@ -17,22 +33,23 @@ const SignUp = () => {
   const { signup } = useAuth()
   const router = useRouter()
 
+  // Define password requirements based on our Zod schema
   const passwordRequirements = [
     { text: "Minimum of 8 characters", met: password.length >= 8 },
     { text: "A minimum of 1 special character", met: /[!@#$%^&*(),.?":{}|<>]/.test(password) },
   ]
 
   const validateForm = () => {
-    // Check if passwords match
-    if (password !== confirmPassword) {
-      setPasswordError("Passwords don't match")
-      return false
-    }
+    const result = signupSchema.safeParse({
+      email,
+      password,
+      confirmPassword
+    })
     
-    // Check if all password requirements are met
-    const allRequirementsMet = passwordRequirements.every(req => req.met)
-    if (!allRequirementsMet) {
-      setPasswordError("Password doesn't meet all requirements")
+    if (!result.success) {
+      // Get the first error message
+      const errorMsg = result.error.errors[0]?.message || "Validation failed"
+      setPasswordError(errorMsg)
       return false
     }
     

@@ -5,6 +5,12 @@ import { useState } from "react"
 import { toast } from "sonner"
 import { useAuth } from "@/components/AuthContext"
 import { useRouter } from "next/navigation"
+import { z } from "zod"
+
+const loginSchema = z.object({
+  email: z.string().email({ message: "Please enter a valid email address" }),
+  password: z.string().min(8, { message: "Password is required" })
+})
 
 const Login = () => {
   const [email, setEmail] = useState("")
@@ -18,6 +24,16 @@ const Login = () => {
     setIsLoading(true)
     
     try {
+      // Validate form data with Zod
+      const result = loginSchema.safeParse({ email, password })
+      
+      if (!result.success) {
+        const errorMessage = result.error.errors[0]?.message || "Invalid form data"
+        toast.error(errorMessage)
+        setIsLoading(false)
+        return
+      }
+      
       // Query the API to find a user with the provided email
       const response = await fetch(
         `https://688b2b592a52cabb9f506d87.mockapi.io/api/v1/users?email=${encodeURIComponent(email)}`
@@ -28,7 +44,6 @@ const Login = () => {
       }
       
       const users = await response.json()
-      
       
       // Check if a user with this email exists
       if (users.length === 0) {
