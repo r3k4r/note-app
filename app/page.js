@@ -60,15 +60,6 @@ export default function NotesDashboard() {
     },
   };
 
-  // Fetch notes when component mounts or user changes
-  useEffect(() => {
-    if (user) {
-      fetchNotes()
-    } else {
-      // If not logged in, redirect to login
-      router.push('/login')
-    }
-  }, [user])
 
   // Fetch notes from the API
   const fetchNotes = async () => {
@@ -96,6 +87,16 @@ export default function NotesDashboard() {
       setIsLoading(false)
     }
   }
+
+  // Fetch notes when component mounts or user changes
+  useEffect(() => {
+    if (user) {
+      fetchNotes()
+    } else {
+      // If not logged in, redirect to login
+      router.push('/login')
+    }
+  }, [user])
 
   // Handle click outside to close delete dialog
   useEffect(() => {
