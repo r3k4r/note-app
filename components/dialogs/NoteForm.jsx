@@ -33,7 +33,7 @@ export default function NoteForm({ defaultValues, onSubmit, isSubmitting, mode =
     handleSubmit, 
     setValue, 
     watch, 
-    formState: { errors } 
+    formState: { errors, dirtyFields } 
   } = useForm({
     resolver: zodResolver(noteSchema),
     defaultValues: defaultValues || {
@@ -45,6 +45,9 @@ export default function NoteForm({ defaultValues, onSubmit, isSubmitting, mode =
   });
 
   const watchedPriority = watch("priority");
+  const watchedTitle = watch("title");
+  const watchedContent = watch("content");
+  const watchedDate = watch("date");
 
   const handlePrioritySelect = (priority) => {
     setValue("priority", priority, { shouldValidate: true });
@@ -60,7 +63,9 @@ export default function NoteForm({ defaultValues, onSubmit, isSubmitting, mode =
         <input
           id="title"
           className={`w-full p-2 border rounded-md transition-colors duration-200
-            ${errors.title ? 'border-red-300' : 'border-gray-300 dark:border-gray-600'} 
+            ${errors.title ? 'border-red-300 dark:border-red-500' : 
+              watchedTitle ? 'border-green-500 dark:border-green-500' : 
+              'border-gray-300 dark:border-gray-600'} 
             focus:outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-700
             dark:bg-gray-700 dark:text-white`}
           placeholder="Title"
@@ -81,7 +86,9 @@ export default function NoteForm({ defaultValues, onSubmit, isSubmitting, mode =
           id="content"
           rows={4}
           className={`w-full p-2 border rounded-md transition-colors duration-200
-            ${errors.content ? 'border-red-300' : 'border-gray-300 dark:border-gray-600'} 
+            ${errors.content ? 'border-red-300 dark:border-red-500' : 
+              watchedContent ? 'border-green-500 dark:border-green-500' : 
+              'border-gray-300 dark:border-gray-600'} 
             focus:outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-700
             dark:bg-gray-700 dark:text-white`}
           placeholder="Content"
@@ -102,7 +109,9 @@ export default function NoteForm({ defaultValues, onSubmit, isSubmitting, mode =
           type="date"
           id="date"
           className={`w-full p-2 border rounded-md transition-colors duration-200
-            ${errors.date ? 'border-red-300' : 'border-gray-300 dark:border-gray-600'} 
+            ${errors.date ? 'border-red-300 dark:border-red-500' : 
+              watchedDate ? 'border-green-500 dark:border-green-500' : 
+              'border-gray-300 dark:border-gray-600'} 
             focus:outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-700
             dark:bg-gray-700 dark:text-white`}
           disabled={isSubmitting}
