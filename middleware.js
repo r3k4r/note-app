@@ -3,7 +3,8 @@ import { NextResponse } from "next/server"
 
 export default async function middleware(req) {
     const { pathname } = req.nextUrl
-    const isAuth = req.cookies.get('user')?.value
+    const isAuth = req.cookies.get('id')?.value
+    console.log('isAuth:', isAuth, 'pathname:', pathname)
     
 
     

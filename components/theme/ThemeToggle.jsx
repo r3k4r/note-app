@@ -15,7 +15,6 @@ export default function ThemeToggle() {
     setMounted(true);
     const savedTheme = localStorage.getItem('theme') || 'light';
     setCurrentTheme(savedTheme);
-    console.log("Initial theme from localStorage:", savedTheme);
   }, []);
 
   useEffect(() => {
