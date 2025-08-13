@@ -1,4 +1,5 @@
 import axios from 'axios'
+import Cookies from 'js-cookie'
 
 // Create a simple axios instance
 const axiosClient = axios.create({
@@ -15,7 +16,7 @@ axiosClient.interceptors.response.use(
     // Handle 401 Unauthorized errors
     if (error.response && error.response.status === 401) {
       // Clear auth cookie
-      document.cookie = 'id=; path=/; max-age=0'
+      Cookies.remove('id', { path: '/' })
       
       // Show notification
       toast.error('Your session has expired. Please log in again.')

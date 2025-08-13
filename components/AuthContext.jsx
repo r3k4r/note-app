@@ -1,6 +1,7 @@
 'use client'
 import { createContext, useState, useEffect, useContext } from 'react'
 import { axiosClient, API_PATHS } from '@/config'
+import Cookies from 'js-cookie'
 
 const AuthContext = createContext()
 
@@ -19,29 +20,20 @@ export const AuthProvider = ({ children }) => {
 
   // Load user data on app start
   useEffect(() => {
-    const getCookie = name => {
-      const cookies = document.cookie.split(';')
-      for (let cookie of cookies) {
-        const [cookieName, cookieValue] = cookie.trim().split('=')
-        if (cookieName === name) {
-          return cookieValue
-        }
-      }
-      return null
+    const userId = Cookies.get('id')
+    if (userId) {
+      fetchUserData(userId)
     }
-
-    const userId = getCookie('id')
-    fetchUserData(userId)
   }, [])
 
   // Set ID in cookies
   const setAuthData = userId => {
-    document.cookie = `id=${userId}; path=/`
+    Cookies.set('id', userId, { path: '/' })
   }
 
   // Remove ID from cookies
   const removeAuthData = () => {
-    document.cookie = 'id=; path=/; max-age=0'
+    Cookies.remove('id', { path: '/' })
     setUser(null)
   }
 
@@ -69,3 +61,5 @@ export const AuthProvider = ({ children }) => {
 }
 
 export const useAuth = () => useContext(AuthContext)
+
+
