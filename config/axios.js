@@ -18,9 +18,6 @@ axiosClient.interceptors.response.use(
       // Clear auth cookie
       Cookies.remove('id', { path: '/' })
       
-      // Show notification
-      toast.error('Your session has expired. Please log in again.')
-      
       // Redirect to login page after a short delay
       setTimeout(() => {
         window.location.href = '/login'
