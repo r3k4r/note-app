@@ -3,7 +3,6 @@ import { NextResponse } from 'next/server'
 export default async function middleware(req) {
   const { pathname } = req.nextUrl
   const isAuth = req.cookies.get('id')?.value
-  console.log('isAuth:', isAuth, 'pathname:', pathname)
 
   // Routes that are always public (accessible to everyone)
   const publicRoutes = ['/Frame.svg', '/Logo.svg']
