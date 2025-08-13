@@ -5,16 +5,31 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 // Utility functions defined outside component
-const getPriorityColor = priority => {
+const getPriorityColor = (priority, isChecked) => {
+  // Return darker version if checked
+  if (isChecked) {
+    switch (priority) {
+      case 'urgent':
+        return 'bg-red-400'
+      case 'high':
+        return 'bg-orange-400'
+      case 'low':
+        return 'bg-teal-400'
+      default:
+        return 'bg-gray-400'
+    }
+  }
+  
+  // Return normal version if not checked
   switch (priority) {
     case 'urgent':
-      return 'bg-red-400'
-    case 'high':
-      return 'bg-orange-400'
-    case 'low':
-      return 'bg-teal-400'
-    default:
-      return 'bg-gray-400'
+        return 'bg-red-500'
+      case 'high':
+        return 'bg-orange-500'
+      case 'low':
+        return 'bg-teal-500'
+      default:
+        return 'bg-gray-500'
   }
 }
 
@@ -61,7 +76,7 @@ export default function NoteCard({ note, onDelete, onEdit, viewMode = 'grid' }) 
   if (viewMode === 'list') {
     return (
       <motion.div
-        className={`${getPriorityColor(note.priority)} rounded-lg p-4 text-white relative mb-4 w-[450px] transition-all duration-300 ${isChecked ? 'opacity-70' : ''}`}
+        className={`${getPriorityColor(note.priority, isChecked)} rounded-lg p-4 text-white relative mb-4 w-[450px] transition-all duration-300`}
         variants={cardVariants}
         initial="hidden"
         animate="visible"
@@ -164,7 +179,7 @@ export default function NoteCard({ note, onDelete, onEdit, viewMode = 'grid' }) 
 
   return (
     <motion.div
-      className={`${getPriorityColor(note.priority)} rounded-lg p-4 text-white relative max-w-[380px] w-full flex flex-col transition-all duration-300 ${isChecked ? 'opacity-70' : ''}`}
+      className={`${getPriorityColor(note.priority, isChecked)} rounded-lg p-4 text-white relative max-w-[380px] w-full flex flex-col transition-all duration-300`}
       variants={cardVariants}
       initial="hidden"
       animate="visible"
