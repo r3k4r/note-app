@@ -54,7 +54,7 @@ const EmptyState = () => {
     >
       {/* Empty State Image */}
       <motion.div className="mb-12" variants={imageVariants}>
-        <Image src={'/Empty-icon.svg'} width={202} height={180} alt="Empty Icon" />
+        <Image src={'/EmptyIcon.svg'} width={202} height={180} alt="Empty Icon" />
       </motion.div>
 
       {/* Text Content */}

@@ -5,7 +5,7 @@ export default async function middleware(req) {
   const isAuth = req.cookies.get('id')?.value
 
   // Routes that are always public (accessible to everyone)
-  const publicRoutes = ['/Frame.svg', '/Logo.svg']
+  const publicRoutes = ['/Frame.svg', '/Logo.svg', '/EmptyIcon.svg']
 
   // Public routes when logged out, private when logged in
   const authRoutes = ['/login', '/signup']
