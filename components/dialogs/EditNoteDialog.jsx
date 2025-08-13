@@ -1,12 +1,12 @@
-"use client"
+'use client'
 
-import { useState, useEffect } from "react"
-import { toast } from "sonner"
-import { useAuth } from "../AuthContext"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import NoteForm from "./NoteForm"
-import { ENDPOINTS } from "@/config"
-import { Spinner } from "@/components/ui/spinner"
+import { useState, useEffect } from 'react'
+import { toast } from 'sonner'
+import { useAuth } from '../AuthContext'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import NoteForm from './NoteForm'
+import { ENDPOINTS } from '@/config'
+import { Spinner } from '@/components/ui/spinner'
 
 export default function EditNoteDialog({ isOpen, onClose, onSuccess, noteData }) {
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -16,25 +16,25 @@ export default function EditNoteDialog({ isOpen, onClose, onSuccess, noteData })
   useEffect(() => {
     if (noteData) {
       setDefaultValues({
-        title: noteData.title || "",
-        content: noteData.content || "",
-        date: noteData.date || "",
-        priority: noteData.priority || ""
+        title: noteData.title || '',
+        content: noteData.content || '',
+        date: noteData.date || '',
+        priority: noteData.priority || '',
       })
     }
   }, [noteData])
 
-  const handleUpdateNote = async (data) => {
+  const handleUpdateNote = async data => {
     if (!user || !user.id || !noteData || !noteData.id) {
-      toast.error("Cannot update note. Missing information.")
+      toast.error('Cannot update note. Missing information.')
       return
     }
-    
+
     setIsSubmitting(true)
-    
+
     try {
       const url = ENDPOINTS.NOTE(user.id, noteData.id)
-      
+
       const response = await fetch(url, {
         method: 'PUT',
         headers: {
@@ -44,25 +44,24 @@ export default function EditNoteDialog({ isOpen, onClose, onSuccess, noteData })
       })
 
       if (!response.ok) {
-        throw new Error("Failed to update note")
+        throw new Error('Failed to update note')
       }
 
       const responseData = await response.json()
-      
-      toast.success("Note updated successfully!")
+
+      toast.success('Note updated successfully!')
       onSuccess(responseData)
       onClose()
-      
     } catch (error) {
-      console.error("Error updating note:", error)
-      toast.error("Failed to update note. Please try again.")
+      console.error('Error updating note:', error)
+      toast.error('Failed to update note. Please try again.')
     } finally {
       setIsSubmitting(false)
     }
   }
 
   // Only render the dialog if we have default values
-  if (!defaultValues && noteData) return null;
+  if (!defaultValues && noteData) return null
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -73,8 +72,8 @@ export default function EditNoteDialog({ isOpen, onClose, onSuccess, noteData })
             {isSubmitting && <Spinner size="sm" color="black" className="ml-2 dark:text-white" />}
           </DialogTitle>
         </DialogHeader>
-        
-        <NoteForm 
+
+        <NoteForm
           defaultValues={defaultValues}
           onSubmit={handleUpdateNote}
           isSubmitting={isSubmitting}

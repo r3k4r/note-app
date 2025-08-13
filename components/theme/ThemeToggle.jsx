@@ -1,41 +1,41 @@
-'use client';
+'use client'
 
-import { useTheme } from 'next-themes';
-import { useEffect, useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { SunIcon, MoonIcon } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { useTheme } from 'next-themes'
+import { useEffect, useState } from 'react'
+import { Button } from '@/components/ui/button'
+import { SunIcon, MoonIcon } from 'lucide-react'
+import { motion } from 'framer-motion'
 
 export default function ThemeToggle() {
-  const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-  const [currentTheme, setCurrentTheme] = useState('light');
+  const { theme, setTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+  const [currentTheme, setCurrentTheme] = useState('light')
 
   useEffect(() => {
-    setMounted(true);
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    setCurrentTheme(savedTheme);
-  }, []);
+    setMounted(true)
+    const savedTheme = localStorage.getItem('theme') || 'light'
+    setCurrentTheme(savedTheme)
+  }, [])
 
   useEffect(() => {
     if (mounted && theme) {
-      setCurrentTheme(theme);
-      console.log("Theme updated from provider:", theme);
+      setCurrentTheme(theme)
+      console.log('Theme updated from provider:', theme)
     }
-  }, [theme, mounted]);
+  }, [theme, mounted])
 
   const toggleTheme = () => {
-    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    console.log(`Toggling theme from ${currentTheme} to ${newTheme}`);
-    
-    setCurrentTheme(newTheme);
-    
-    setTheme(newTheme);
-    
-    localStorage.setItem('theme', newTheme);
-  };
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark'
+    console.log(`Toggling theme from ${currentTheme} to ${newTheme}`)
 
-  if (!mounted) return null;
+    setCurrentTheme(newTheme)
+
+    setTheme(newTheme)
+
+    localStorage.setItem('theme', newTheme)
+  }
+
+  if (!mounted) return null
 
   return (
     <Button
@@ -51,7 +51,7 @@ export default function ThemeToggle() {
             key="moon"
             initial={{ opacity: 0, scale: 0.5, rotate: -90 }}
             animate={{ opacity: 1, scale: 1, rotate: 0 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
             className="absolute inset-0"
           >
             <MoonIcon className="h-5 w-5" />
@@ -61,7 +61,7 @@ export default function ThemeToggle() {
             key="sun"
             initial={{ opacity: 0, scale: 0.5, rotate: 90 }}
             animate={{ opacity: 1, scale: 1, rotate: 0 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
             className="absolute inset-0"
           >
             <SunIcon className="h-5 w-5" />
@@ -69,5 +69,5 @@ export default function ThemeToggle() {
         )}
       </div>
     </Button>
-  );
+  )
 }

@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import {
   Dialog,
@@ -6,9 +6,9 @@ import {
   DialogDescription,
   DialogFooter,
   DialogHeader,
-  DialogTitle
-} from "@/components/ui/dialog"
-import { motion } from "framer-motion"
+  DialogTitle,
+} from '@/components/ui/dialog'
+import { motion } from 'framer-motion'
 
 export default function LogoutDialog({ open, onClose, onConfirm }) {
   return (
@@ -22,7 +22,7 @@ export default function LogoutDialog({ open, onClose, onConfirm }) {
             Please confirm if you want to logout.
           </DialogDescription>
         </DialogHeader>
-        
+
         <DialogFooter className="flex flex-row justify-center gap-4 sm:justify-center mt-10">
           <motion.button
             whileHover={{ scale: 1.05 }}
@@ -32,7 +32,7 @@ export default function LogoutDialog({ open, onClose, onConfirm }) {
           >
             No, Cancel
           </motion.button>
-          
+
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}

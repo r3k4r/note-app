@@ -1,7 +1,7 @@
-"use client";
+'use client'
 
-import { motion } from "framer-motion";
-import Image from "next/image";
+import { motion } from 'framer-motion'
+import Image from 'next/image'
 
 const EmptyState = () => {
   const containerVariants = {
@@ -10,13 +10,13 @@ const EmptyState = () => {
       opacity: 1,
       y: 0,
       transition: {
-        type: "spring",
+        type: 'spring',
         stiffness: 300,
         damping: 25,
         staggerChildren: 0.2,
       },
     },
-  };
+  }
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -24,12 +24,12 @@ const EmptyState = () => {
       opacity: 1,
       y: 0,
       transition: {
-        type: "spring",
+        type: 'spring',
         stiffness: 300,
         damping: 25,
       },
     },
-  };
+  }
 
   const imageVariants = {
     hidden: { opacity: 0, scale: 0.8 },
@@ -37,13 +37,13 @@ const EmptyState = () => {
       opacity: 1,
       scale: 1,
       transition: {
-        type: "spring",
+        type: 'spring',
         stiffness: 300,
         damping: 15,
         delay: 0.1,
       },
     },
-  };
+  }
 
   return (
     <motion.div
@@ -53,10 +53,7 @@ const EmptyState = () => {
       animate="visible"
     >
       {/* Empty State Image */}
-      <motion.div
-        className="mb-12"
-        variants={imageVariants}
-      >
+      <motion.div className="mb-12" variants={imageVariants}>
         <Image src={'/Empty-icon.svg'} width={202} height={180} alt="Empty Icon" />
       </motion.div>
 
@@ -79,7 +76,7 @@ const EmptyState = () => {
         way!
       </motion.p>
     </motion.div>
-  );
-};
+  )
+}
 
-export default EmptyState;
+export default EmptyState

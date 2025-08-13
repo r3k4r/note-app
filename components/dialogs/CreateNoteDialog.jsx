@@ -1,36 +1,35 @@
-"use client"
+'use client'
 
-import { useState } from "react"
-import { toast } from "sonner"
-import { useAuth } from "../AuthContext"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import NoteForm from "./NoteForm"
-import { axiosClient, API_PATHS } from "@/config"
-import { Spinner } from "@/components/ui/spinner"
+import { useState } from 'react'
+import { toast } from 'sonner'
+import { useAuth } from '../AuthContext'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import NoteForm from './NoteForm'
+import { axiosClient, API_PATHS } from '@/config'
+import { Spinner } from '@/components/ui/spinner'
 
 export default function CreateNoteDialog({ isOpen, onClose, onSuccess }) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { user } = useAuth()
 
-  const handleCreateNote = async (data) => {
+  const handleCreateNote = async data => {
     if (!user || !user.id) {
-      toast.error("Please log in to create notes")
+      toast.error('Please log in to create notes')
       return
     }
-    
+
     setIsSubmitting(true)
-    
+
     try {
       // Create note with axios
-      const response = await axiosClient.post(API_PATHS.NOTES(user.id), data);
-      
-      toast.success("Note created successfully!")
+      const response = await axiosClient.post(API_PATHS.NOTES(user.id), data)
+
+      toast.success('Note created successfully!')
       onSuccess(response.data)
       onClose()
-      
     } catch (error) {
-      console.error("Error creating note:", error)
-      toast.error("Failed to create note. Please try again.")
+      console.error('Error creating note:', error)
+      toast.error('Failed to create note. Please try again.')
     } finally {
       setIsSubmitting(false)
     }
@@ -45,14 +44,9 @@ export default function CreateNoteDialog({ isOpen, onClose, onSuccess }) {
             {isSubmitting && <Spinner size="sm" color="black" className="ml-2" />}
           </DialogTitle>
         </DialogHeader>
-        
-        <NoteForm 
-          onSubmit={handleCreateNote}
-          isSubmitting={isSubmitting}
-          mode="create"
-        />
+
+        <NoteForm onSubmit={handleCreateNote} isSubmitting={isSubmitting} mode="create" />
       </DialogContent>
     </Dialog>
   )
 }
-

@@ -1,13 +1,13 @@
-"use client"
+'use client'
 
-import { motion } from "framer-motion"
-import NoteCard from "@/components/notes/NoteCard"
+import { motion } from 'framer-motion'
+import NoteCard from '@/components/notes/NoteCard'
 
 // Utility function defined outside component
-const sortNotesByPriority = (notes) => {
-  const urgent = notes.filter((note) => note.priority === "urgent")
-  const high = notes.filter((note) => note.priority === "high")
-  const low = notes.filter((note) => note.priority === "low")
+const sortNotesByPriority = notes => {
+  const urgent = notes.filter(note => note.priority === 'urgent')
+  const high = notes.filter(note => note.priority === 'high')
+  const low = notes.filter(note => note.priority === 'low')
   return [...urgent, ...high, ...low]
 }
 
@@ -20,10 +20,10 @@ const containerVariants = {
       staggerChildren: 0.05,
     },
   },
-};
+}
 
 export default function NotesList({ notes, onDelete, onEdit }) {
-  const sortedNotes = sortNotesByPriority(notes);
+  const sortedNotes = sortNotesByPriority(notes)
 
   return (
     <div className="relative">
@@ -43,20 +43,20 @@ export default function NotesList({ notes, onDelete, onEdit }) {
         </div>
       </div>
 
-      <motion.div 
+      <motion.div
         className="flex justify-center"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
         <div className="space-y-4 sm:ml-10 md:ml-20">
-          {sortedNotes.map((note) => (
-            <NoteCard 
-              key={note.id} 
-              note={note} 
-              onDelete={onDelete} 
+          {sortedNotes.map(note => (
+            <NoteCard
+              key={note.id}
+              note={note}
+              onDelete={onDelete}
               onEdit={onEdit}
-              viewMode="list" 
+              viewMode="list"
             />
           ))}
         </div>

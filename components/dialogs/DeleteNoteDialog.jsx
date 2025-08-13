@@ -1,27 +1,27 @@
-"use client"
+'use client'
 
-import { useState } from "react"
+import { useState } from 'react'
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
-  DialogTitle
-} from "@/components/ui/dialog"
-import { motion } from "framer-motion"
-import { Spinner } from "@/components/ui/spinner"
+  DialogTitle,
+} from '@/components/ui/dialog'
+import { motion } from 'framer-motion'
+import { Spinner } from '@/components/ui/spinner'
 
-const getPriorityColor = (priority) => {
+const getPriorityColor = priority => {
   switch (priority) {
-    case "urgent":
-      return "text-red-500"
-    case "high":
-      return "text-orange-500"
-    case "low":
-      return "text-teal-500"
+    case 'urgent':
+      return 'text-red-500'
+    case 'high':
+      return 'text-orange-500'
+    case 'low':
+      return 'text-teal-500'
     default:
-      return "text-gray-500"
+      return 'text-gray-500'
   }
 }
 
@@ -48,7 +48,7 @@ export default function DeleteNoteDialog({ noteToDelete, open, onClose, onConfir
             To be confirmed, it will not be possible to restore the deleted note.
           </DialogDescription>
         </DialogHeader>
-        
+
         <DialogFooter className="flex justify-center gap-4 sm:justify-center mt-6">
           <motion.button
             onClick={onClose}
@@ -59,7 +59,7 @@ export default function DeleteNoteDialog({ noteToDelete, open, onClose, onConfir
           >
             No, Cancel
           </motion.button>
-          
+
           <motion.button
             onClick={handleConfirm}
             className="px-6 py-2 bg-red-600 hover:bg-red-500 text-sm text-white font-semibold rounded-lg transition-colors flex items-center"
@@ -75,5 +75,3 @@ export default function DeleteNoteDialog({ noteToDelete, open, onClose, onConfir
     </Dialog>
   )
 }
- 
-
