@@ -12,7 +12,7 @@ import { axiosClient, API_PATHS, APP_CONFIG } from '@/config'
 
 const loginSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address' }),
-  password: z.string().min(8, { message: 'Password is required' }),
+  password: z.string().min(8, { message: 'Password must be at least 8 characters' }),
 })
 
 const Login = () => {
@@ -23,6 +23,7 @@ const Login = () => {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(loginSchema),
@@ -43,15 +44,21 @@ const Login = () => {
 
       // Check if a user with this email exists
       if (users.length === 0) {
-        toast.error('User not found. Please check your email or sign up.')
+        setError('email', {
+          type: 'manual',
+          message: 'No account found with this email',
+        })
         return
       }
 
       const user = users[0]
 
-      // Verify the password
+      // Verify the password - using setError instead of toast
       if (user.password !== data.password) {
-        toast.error('Incorrect password. Please try again.')
+        setError('password', {
+          type: 'manual',
+          message: 'Incorrect password. Please try again.',
+        })
         return
       }
 
@@ -65,7 +72,7 @@ const Login = () => {
       }, APP_CONFIG.AUTH_TIMEOUT)
     } catch (error) {
       console.error('Login error:', error)
-      toast.error('Failed to login. Please try again later.')
+      toast.error('Login failed. Please try again.')
     } finally {
       setIsLoading(false)
     }
