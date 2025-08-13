@@ -1,7 +1,6 @@
 'use client'
 import { createContext, useState, useEffect, useContext } from 'react'
 import { axiosClient, API_PATHS } from '@/config'
-import { toast } from 'sonner'
 
 const AuthContext = createContext()
 
@@ -15,12 +14,6 @@ export const AuthProvider = ({ children }) => {
       setUser(response.data)
     } catch (error) {
       console.error('Error fetching user data:', error)
-
-      // If status is 4xx, user is not authorized or doesn't exist
-      if (error.response && error.response.status >= 400 && error.response.status < 500) {
-        removeAuthData()
-        toast.error('Session expired. Please login again.')
-      }
     }
   }
 
@@ -69,7 +62,9 @@ export const AuthProvider = ({ children }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ user, signup, login, logout }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ user, signup, login, logout }}>
+      {children}
+    </AuthContext.Provider>
   )
 }
 
